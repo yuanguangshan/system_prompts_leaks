@@ -1,5 +1,11 @@
+<!-- BILINGUAL-EN-ZH -->
 Drive skill test fixture (synthetic).
+Drive 技能测试夹具（合成数据）。
 Q4 planning brief.
+Q4 规划简报。
 - Ship the refreshed connector skills.
+  交付更新后的连接器技能。
 - Prove every advertised primitive is covered or documented as a gap.
+  证明每一项对外宣称的能力原语都已被覆盖，或已被记录为缺口。
 - Use synthetic accounts and files only.
+  仅使用合成的账号与文件。

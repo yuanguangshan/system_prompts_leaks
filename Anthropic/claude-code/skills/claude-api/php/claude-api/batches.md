@@ -1,6 +1,7 @@
-# Message Batches - PHP
+<!-- BILINGUAL-EN-ZH -->
+# Message Batches - PHP / 消息批处理 - PHP
 
-## Message Batches API
+## Message Batches API / 消息批处理 API
 
 ```php
 $batch = $client->messages->batches->create(requests: [
@@ -12,4 +13,3 @@ $batch = $client->messages->batches->create(requests: [
 ```
 
 ---
-

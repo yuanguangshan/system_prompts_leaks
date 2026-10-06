@@ -1,6 +1,7 @@
-# Streaming - C#
+<!-- BILINGUAL-EN-ZH -->
+# Streaming - C# / 流式传输 - C#
 
-## Streaming
+## Streaming / 流式传输
 
 ```csharp
 using Anthropic.Models.Messages;
@@ -23,6 +24,8 @@ await foreach (RawMessageStreamEvent streamEvent in client.Messages.CreateStream
 ```
 
 **`RawMessageStreamEvent` TryPick methods** (naming drops the `Message`/`Raw` prefix): `TryPickStart`, `TryPickDelta`, `TryPickStop`, `TryPickContentBlockStart`, `TryPickContentBlockDelta`, `TryPickContentBlockStop`. There is no `TryPickMessageStop` - use `TryPickStop`.
+
+**`RawMessageStreamEvent` 的 TryPick 方法**（命名中去掉 `Message`/`Raw` 前缀）：`TryPickStart`、`TryPickDelta`、`TryPickStop`、`TryPickContentBlockStart`、`TryPickContentBlockDelta`、`TryPickContentBlockStop`。不存在 `TryPickMessageStop`——请使用 `TryPickStop`。
 
 ---
 

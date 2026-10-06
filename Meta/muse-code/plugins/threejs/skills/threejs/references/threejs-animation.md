@@ -2,10 +2,11 @@
 name: threejs-animation
 description: Three.js animation - keyframe animation, skeletal animation, morph targets, animation mixing. Use when animating objects, playing GLTF animations, creating procedural motion, or blending animations.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Animation
+# Three.js Animation / Three.js 动画
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -26,17 +27,24 @@ function animate() {
 animate();
 ```
 
-## Animation System Overview
+## Animation System Overview / 动画系统概览
 
 Three.js animation system has three main components:
 
-1. **AnimationClip** - Container for keyframe data
-2. **AnimationMixer** - Plays animations on a root object
-3. **AnimationAction** - Controls playback of a clip
+Three.js 动画系统有三个主要组件：
 
-## AnimationClip
+1. **AnimationClip** - Container for keyframe data
+   **AnimationClip** - 关键帧数据的容器
+2. **AnimationMixer** - Plays animations on a root object
+   **AnimationMixer** - 在根对象上播放动画
+3. **AnimationAction** - Controls playback of a clip
+   **AnimationAction** - 控制剪辑（clip）的回放
+
+## AnimationClip / 动画剪辑
 
 Stores keyframe animation data.
+
+存储关键帧动画数据。
 
 ```javascript
 // Create animation clip
@@ -52,7 +60,7 @@ const track = new THREE.NumberKeyframeTrack(
 const clip = new THREE.AnimationClip("bounce", 2, [track]);
 ```
 
-### KeyframeTrack Types
+### KeyframeTrack Types / 关键帧轨道类型
 
 ```javascript
 // Number track (single value)
@@ -105,7 +113,7 @@ new THREE.StringKeyframeTrack(
 );
 ```
 
-### Interpolation Modes
+### Interpolation Modes / 插值模式
 
 ```javascript
 const track = new THREE.VectorKeyframeTrack(".position", times, values);
@@ -116,9 +124,11 @@ track.setInterpolation(THREE.InterpolateSmooth); // Cubic spline
 track.setInterpolation(THREE.InterpolateDiscrete); // Step function
 ```
 
-## AnimationMixer
+## AnimationMixer / 动画混合器
 
 Plays animations on an object and its descendants.
+
+在一个对象及其后代上播放动画。
 
 ```javascript
 const mixer = new THREE.AnimationMixer(model);
@@ -137,7 +147,7 @@ function animate() {
 }
 ```
 
-### Mixer Events
+### Mixer Events / 混合器事件
 
 ```javascript
 mixer.addEventListener("finished", (e) => {
@@ -149,9 +159,11 @@ mixer.addEventListener("loop", (e) => {
 });
 ```
 
-## AnimationAction
+## AnimationAction / 动画动作
 
 Controls playback of an animation clip.
+
+控制动画剪辑的回放。
 
 ```javascript
 const action = mixer.clipAction(clip);
@@ -189,7 +201,7 @@ action.blendMode = THREE.NormalAnimationBlendMode;
 action.blendMode = THREE.AdditiveAnimationBlendMode;
 ```
 
-### Fade In/Out
+### Fade In/Out / 淡入/淡出
 
 ```javascript
 // Fade in
@@ -209,9 +221,11 @@ action1.crossFadeTo(action2, 0.5, true);
 action2.play();
 ```
 
-## Loading GLTF Animations
+## Loading GLTF Animations / 加载 GLTF 动画
 
 Most common source of skeletal animations.
+
+骨骼动画最常见的来源。
 
 ```javascript
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -257,9 +271,9 @@ function animate() {
 }
 ```
 
-## Skeletal Animation
+## Skeletal Animation / 骨骼动画
 
-### Skeleton and Bones
+### Skeleton and Bones / 骨架与骨骼
 
 ```javascript
 // Access skeleton from skinned mesh
@@ -280,7 +294,7 @@ const helper = new THREE.SkeletonHelper(model);
 scene.add(helper);
 ```
 
-### Programmatic Bone Animation
+### Programmatic Bone Animation / 程序化骨骼动画
 
 ```javascript
 function animate() {
@@ -297,7 +311,7 @@ function animate() {
 }
 ```
 
-### Bone Attachments
+### Bone Attachments / 骨骼挂载
 
 ```javascript
 // Attach object to bone
@@ -310,9 +324,11 @@ weapon.position.set(0, 0, 0.5);
 weapon.rotation.set(0, Math.PI / 2, 0);
 ```
 
-## Morph Targets
+## Morph Targets / 形变目标
 
 Blend between different mesh shapes.
+
+在不同的网格形状之间混合。
 
 ```javascript
 // Morph targets are stored in geometry
@@ -331,7 +347,7 @@ const smileIndex = mesh.morphTargetDictionary["smile"];
 mesh.morphTargetInfluences[smileIndex] = 1;
 ```
 
-### Animating Morph Targets
+### Animating Morph Targets / 形变目标动画
 
 ```javascript
 // Procedural
@@ -350,9 +366,11 @@ const clip = new THREE.AnimationClip("smile", 1, [track]);
 mixer.clipAction(clip).play();
 ```
 
-## Animation Blending
+## Animation Blending / 动画混合
 
 Mix multiple animations together.
+
+将多个动画混合在一起。
 
 ```javascript
 // Setup actions
@@ -390,7 +408,7 @@ function updateAnimations(speed) {
 }
 ```
 
-### Additive Blending
+### Additive Blending / 叠加混合
 
 ```javascript
 // Base pose
@@ -406,7 +424,7 @@ additiveAction.play();
 THREE.AnimationUtils.makeClipAdditive(additiveClip);
 ```
 
-## Animation Utilities
+## Animation Utilities / 动画工具函数
 
 ```javascript
 import * as THREE from "three";
@@ -434,9 +452,9 @@ clip.optimize();
 clip.resetDuration();
 ```
 
-## Procedural Animation Patterns
+## Procedural Animation Patterns / 程序化动画模式
 
-### Smooth Damping
+### Smooth Damping / 平滑阻尼
 
 ```javascript
 // Smooth follow/lerp
@@ -463,7 +481,7 @@ function animate() {
 }
 ```
 
-### Spring Physics
+### Spring Physics / 弹簧物理
 
 ```javascript
 class Spring {
@@ -492,7 +510,7 @@ function animate() {
 }
 ```
 
-### Oscillation
+### Oscillation / 振荡
 
 ```javascript
 function animate() {
@@ -514,13 +532,18 @@ function animate() {
 }
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Share clips**: Same AnimationClip can be used on multiple mixers
+   **共享剪辑**：同一个 AnimationClip 可用于多个混合器
 2. **Optimize clips**: Call `clip.optimize()` to remove redundant keyframes
+   **优化剪辑**：调用 `clip.optimize()` 移除冗余关键帧
 3. **Disable when off-screen**: Stop mixer updates for invisible objects
+   **离屏时停用**：对不可见对象停止混合器更新
 4. **Use LOD for animations**: Simpler rigs for distant characters
+   **动画使用 LOD**：为远处角色使用更简单的骨骼装备
 5. **Limit active mixers**: Each mixer.update() has a cost
+   **限制活动混合器数量**：每次 mixer.update() 都有开销
 
 ```javascript
 // Pause animation when not visible
@@ -545,8 +568,11 @@ function getClip(name) {
 }
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-loaders` - Loading animated GLTF models
+  `threejs-loaders` - 加载带动画的 GLTF 模型
 - `threejs-fundamentals` - Clock and animation loop
+  `threejs-fundamentals` - 时钟与动画循环
 - `threejs-shaders` - Vertex animation in shaders
+  `threejs-shaders` - 着色器中的顶点动画

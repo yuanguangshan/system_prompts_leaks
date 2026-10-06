@@ -1,4 +1,7 @@
+<!-- BILINGUAL-EN-ZH -->
 © 2025 Anthropic, PBC. All rights reserved.
+
+© 2025 Anthropic, PBC. 保留所有权利。
 
 LICENSE: Use of these materials (including all code, prompts, assets, files,
 and other components of this Skill) is governed by your agreement with
@@ -10,21 +13,40 @@ https://www.anthropic.com/legal/commercial-terms
 Your applicable agreement is referred to as the "Agreement." "Services" are
 as defined in the Agreement.
 
+许可：这些材料（包括本技能的全部代码、提示词、资产、文件及其他组成部分）的使用，受您与 Anthropic 之间关于使用 Anthropic 服务的协议约束。如不存在单独协议，则视情况适用 Anthropic 的《消费者服务条款》或《商业服务条款》：
+https://www.anthropic.com/legal/consumer-terms
+https://www.anthropic.com/legal/commercial-terms
+您适用的协议在下文中称为"协议"。"服务"按协议中的定义理解。
+
 ADDITIONAL RESTRICTIONS: Notwithstanding anything in the Agreement to the
 contrary, users may not:
 
+附加限制：尽管协议中有任何相反规定，用户均不得：
+
 - Extract these materials from the Services or retain copies of these
   materials outside the Services
+  将这些材料从服务中提取出来，或在服务之外保留这些材料的副本
 - Reproduce or copy these materials, except for temporary copies created
   automatically during authorized use of the Services
+  复制这些材料，但在经授权使用服务期间自动产生的临时副本除外
 - Create derivative works based on these materials
+  基于这些材料创作衍生作品
 - Distribute, sublicense, or transfer these materials to any third party
+  向任何第三方分发、转许可或转让这些材料
 - Make, offer to sell, sell, or import any inventions embodied in these
   materials
+  制造、许诺销售、销售或进口这些材料所体现的任何发明
 - Reverse engineer, decompile, or disassemble these materials
+  对这些材料进行逆向工程、反编译或反汇编
 
 The receipt, viewing, or possession of these materials does not convey or
 imply any license or right beyond those expressly granted above.
 
+接收、查看或持有这些材料，并不授予或暗示任何超出上文明确授权范围的许可或权利。
+
 Anthropic retains all right, title, and interest in these materials,
 including all copyrights, patents, and other intellectual property rights.
+
+Anthropic 保留对这些材料的一切权利、权属和权益，包括所有版权、专利及其他知识产权。
+
+【评论】这是一份专有许可声明而非开源许可证：除协议授权外，明确禁止提取、复制、衍生创作、再分发与逆向工程，比常见开源技能仓库的宽松许可严格得多。

@@ -1,12 +1,19 @@
-# Tool Use - Python
+<!-- BILINGUAL-EN-ZH -->
+# Tool Use - Python / 工具使用 - Python
 
 For conceptual overview (tool definitions, tool choice, tips), see [shared/tool-use-concepts.md](../../shared/tool-use-concepts.md).
 
-## Tool Runner (Recommended)
+概念性概述（工具定义、工具选择、技巧）参见 [shared/tool-use-concepts.md](../../shared/tool-use-concepts.md)。
+
+## Tool Runner (Recommended) / 工具运行器（推荐）
 
 **Beta:** The tool runner is in beta in the Python SDK.
 
+**Beta：**工具运行器在 Python SDK 中处于 beta 阶段。
+
 Use the `@beta_tool` decorator to define tools as typed functions, then pass them to `client.beta.messages.tool_runner()`:
+
+使用 `@beta_tool` 装饰器把工具定义为带类型的函数，然后把它们传给 `client.beta.messages.tool_runner()`：
 
 ```python
 import anthropic
@@ -40,18 +47,32 @@ for message in runner:
 
 For async usage, use `@beta_async_tool` with `async def` functions.
 
+异步用法请将 `@beta_async_tool` 与 `async def` 函数配合使用。
+
 **Key benefits of the tool runner:**
 
-- No manual loop - the SDK handles calling tools and feeding results back
-- Type-safe tool inputs via decorators
-- Tool schemas are generated automatically from function signatures
-- Iteration stops automatically when Claude has no more tool calls
+**工具运行器的主要优点：**
 
-### Server tools with the tool runner
+- No manual loop - the SDK handles calling tools and feeding results back
+  无需手动循环——SDK 负责调用工具并把结果回填
+- Type-safe tool inputs via decorators
+  通过装饰器获得类型安全的工具输入
+- Tool schemas are generated automatically from function signatures
+  工具 schema 从函数签名自动生成
+- Iteration stops automatically when Claude has no more tool calls
+  当 Claude 没有更多工具调用时，迭代自动停止
+
+### Server tools with the tool runner / 配合工具运行器使用服务器工具
 
 The runner's `tools` list accepts raw server-tool definitions (`web_search_20260209`, `web_fetch_20260209`, code execution) alongside decorated tools - pass the literal tool dict; server tools run on Anthropic's servers, so there is no function to implement.
 
+运行器的 `tools` 列表在接受装饰器工具的同时，也接受原始的服务器工具定义（`web_search_20260209`、`web_fetch_20260209`、代码执行）——直接传入字面的工具字典；服务器工具在 Anthropic 的服务器上运行，因此没有需要实现的函数。
+
 **Caution - the runner does not auto-resume `pause_turn` (as of `anthropic` 0.116.0).** A long-running server-tool turn can stop with `stop_reason: "pause_turn"`. The runner only continues after a client tool produces a result, so a paused turn ends the loop and is returned as the final message - no error, no warning, just a silently truncated answer. Unlike the TypeScript runner, the Python runner cannot be resumed mid-loop: it exits unconditionally when no client tool ran, and `runner.append_messages(...)` does not prevent the exit. To handle `pause_turn`, mirror the conversation history as you iterate, then restart the runner with the paused turn appended:
+
+**注意——运行器不会自动恢复 `pause_turn`（截至 `anthropic` 0.116.0）。**长时间运行的服务器工具回合可能以 `stop_reason: "pause_turn"` 停止。运行器只在客户端工具产生结果后才继续，因此被暂停的回合会结束循环并作为最终消息返回——没有错误、没有警告，只有一个被静默截断的答案。与 TypeScript 运行器不同，Python 运行器无法在循环中途恢复：当没有客户端工具运行时它会无条件退出，且 `runner.append_messages(...)` 不能阻止退出。要处理 `pause_turn`，请在迭代时自行镜像会话历史，然后追加被暂停的回合重启运行器：
+
+【评论】此段把一个 beta 功能的已知边界行为（静默截断、不可中途恢复）写进文档，提醒调用方自行兜底；使用 beta API 时这类注意事项值得逐条核对版本号。
 
 ```python
 messages = [{"role": "user", "content": user_input}]
@@ -84,15 +105,21 @@ while True:
 
 Alternatively, use the manual loop below, which handles `pause_turn` explicitly.
 
+或者，使用下面的手动循环，它显式处理 `pause_turn`。
+
 ---
 
-## MCP Tool Conversion Helpers
+## MCP Tool Conversion Helpers / MCP 工具转换辅助函数
 
 **Beta.** Convert [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) tools, prompts, and resources to Anthropic API types for use with the tool runner. Requires `pip install anthropic[mcp]` (Python 3.10+).
 
+**Beta。**把 [MCP（Model Context Protocol）](https://modelcontextprotocol.io/) 的工具、提示与资源转换为 Anthropic API 类型，以配合工具运行器使用。需要 `pip install anthropic[mcp]`（Python 3.10+）。
+
 > **Note:** The Claude API also supports an `mcp_servers` parameter that lets Claude connect directly to remote MCP servers. Use these helpers instead when you need local MCP servers, prompts, resources, or more control over the MCP connection.
 
-### MCP Tools with Tool Runner
+> **注意：**Claude API 还支持 `mcp_servers` 参数，让 Claude 直接连接远程 MCP 服务器。当你需要本地 MCP 服务器、提示、资源，或需要对 MCP 连接的更多控制时，改用这些辅助函数。
+
+### MCP Tools with Tool Runner / 在工具运行器中使用 MCP 工具
 
 ```python
 from anthropic import AsyncAnthropic
@@ -120,7 +147,9 @@ async with stdio_client(StdioServerParameters(command="mcp-server")) as (read, w
 
 For sync usage, use `mcp_tool` instead of `async_mcp_tool`.
 
-### MCP Prompts
+同步用法请用 `mcp_tool` 而非 `async_mcp_tool`。
+
+### MCP Prompts / MCP 提示（Prompts）
 
 ```python
 from anthropic.lib.tools.mcp import mcp_message
@@ -133,7 +162,7 @@ response = await client.beta.messages.create(
 )
 ```
 
-### MCP Resources as Content
+### MCP Resources as Content / MCP 资源作为内容
 
 ```python
 from anthropic.lib.tools.mcp import mcp_resource_to_content
@@ -152,7 +181,7 @@ response = await client.beta.messages.create(
 )
 ```
 
-### Upload MCP Resources as Files
+### Upload MCP Resources as Files / 将 MCP 资源上传为文件
 
 ```python
 from anthropic.lib.tools.mcp import mcp_resource_to_file
@@ -163,13 +192,19 @@ uploaded = await client.beta.files.upload(file=mcp_resource_to_file(resource))
 
 Conversion functions raise `UnsupportedMCPValueError` if an MCP value cannot be converted (e.g., unsupported content types like audio, unsupported MIME types).
 
+当 MCP 值无法转换时（如音频等不支持的内容类型、不支持的 MIME 类型），转换函数会抛出 `UnsupportedMCPValueError`。
+
 ---
 
-## Manual Agentic Loop
+## Manual Agentic Loop / 手动智能体循环
 
 Prefer the tool runner above. Drop to a manual loop only when you need control the runner does not expose (e.g., a custom transport, request shapes the SDK cannot build, or avoiding a beta dependency - the runner is beta). Human-in-the-loop approval does *not* require a manual loop - gate inside the tool function (return a "user declined" result) or inspect pending `tool_use` blocks in the `for message in runner:` body and call `runner.set_messages_params()`.
 
+优先使用上面的工具运行器。只有当需要运行器未暴露的控制能力时（如自定义传输、SDK 无法构建的请求形态，或避免 beta 依赖——运行器是 beta 功能）才退回手动循环。人在环中的审批*并不*需要手动循环——在工具函数内部加门（返回"用户拒绝"的结果），或在 `for message in runner:` 循环体中检查待处理的 `tool_use` 块并调用 `runner.set_messages_params()`。
+
 If you do need a manual loop:
+
+如果你确实需要手动循环：
 
 ```python
 import anthropic
@@ -224,7 +259,7 @@ final_text = next(b.text for b in response.content if b.type == "text")
 
 ---
 
-## Handling Tool Results
+## Handling Tool Results / 处理工具结果
 
 ```python
 response = client.messages.create(
@@ -263,7 +298,7 @@ for block in response.content:
 
 ---
 
-## Multiple Tool Calls
+## Multiple Tool Calls / 多个工具调用
 
 ```python
 tool_results = []
@@ -293,7 +328,7 @@ if tool_results:
 
 ---
 
-## Error Handling in Tool Results
+## Error Handling in Tool Results / 工具结果中的错误处理
 
 ```python
 tool_result = {
@@ -306,9 +341,13 @@ tool_result = {
 
 ---
 
-## Tool Choice
+## Tool Choice / 工具选择
 
 `tool_choice` is `{"type": "auto"}` by default. Forcing a call (`{"type": "any"}` or `{"type": "tool", "name": ...}`) returns a 400 on Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1, and Claude Mythos 5.1; Claude Opus 5, Claude Sonnet 5, and older models accept it. Steer with the prompt instead, and keep the schema guarantee with `strict: true`:
+
+`tool_choice` 默认为 `{"type": "auto"}`。强制调用（`{"type": "any"}` 或 `{"type": "tool", "name": ...}`）在 Claude Opus 5.5、Claude Sonnet 5.5、Claude Fable 5.1 和 Claude Mythos 5.1 上会返回 400；Claude Opus 5、Claude Sonnet 5 及更早的模型则接受。应改为用提示词引导，并用 `strict: true` 保留 schema 保证：
+
+【评论】新版模型不再支持强制 `tool_choice`，转而推荐"提示词引导 + strict schema"，体现了在模型自主性与调用确定性之间的权衡变化；跨模型兼容的代码需注意这一行为差异。
 
 ```python
 response = client.messages.create(
@@ -322,9 +361,9 @@ response = client.messages.create(
 
 ---
 
-## Code Execution
+## Code Execution / 代码执行
 
-### Basic Usage
+### Basic Usage / 基本用法
 
 ```python
 import anthropic
@@ -351,7 +390,7 @@ for block in response.content:
         print(f"stdout: {block.content.stdout}")
 ```
 
-### Upload Files for Analysis
+### Upload Files for Analysis / 上传文件供分析
 
 ```python
 # 1. Upload a file
@@ -372,7 +411,7 @@ response = client.messages.create(
 )
 ```
 
-### Retrieve Generated Files
+### Retrieve Generated Files / 取回生成的文件
 
 ```python
 import os
@@ -398,7 +437,7 @@ for block in response.content:
                     print(f"Saved: {output_path}")
 ```
 
-### Container Reuse
+### Container Reuse / 容器复用
 
 ```python
 # First request: set up environment
@@ -422,7 +461,7 @@ response2 = client.messages.create(
 )
 ```
 
-### Response Structure
+### Response Structure / 响应结构
 
 ```python
 for block in response.content:
@@ -445,9 +484,9 @@ for block in response.content:
 
 ---
 
-## Memory Tool
+## Memory Tool / 记忆工具
 
-### Basic Usage
+### Basic Usage / 基本用法
 
 ```python
 import anthropic
@@ -462,9 +501,11 @@ response = client.messages.create(
 )
 ```
 
-### SDK Memory Helper
+### SDK Memory Helper / SDK 记忆辅助类
 
 Subclass `BetaAbstractMemoryTool`:
+
+继承 `BetaAbstractMemoryTool`：
 
 ```python
 from anthropic.lib.tools import BetaAbstractMemoryTool
@@ -493,13 +534,15 @@ for message in runner:
 
 For full implementation examples, use WebFetch:
 
+完整实现示例请用 WebFetch 获取：
+
 - `https://github.com/anthropics/anthropic-sdk-python/blob/main/examples/memory/basic.py`
 
 ---
 
-## Structured Outputs
+## Structured Outputs / 结构化输出
 
-### JSON Outputs (Pydantic - Recommended)
+### JSON Outputs (Pydantic - Recommended) / JSON 输出（Pydantic——推荐）
 
 ```python
 from pydantic import BaseModel
@@ -531,7 +574,7 @@ print(contact.name)           # "Jane Doe"
 print(contact.interests)      # ["API", "SDKs"]
 ```
 
-### Raw Schema
+### Raw Schema / 原始 Schema
 
 ```python
 response = client.messages.create(
@@ -565,7 +608,7 @@ text = next(b.text for b in response.content if b.type == "text")
 data = json.loads(text)
 ```
 
-### Strict Tool Use
+### Strict Tool Use / 严格工具使用
 
 ```python
 response = client.messages.create(
@@ -590,7 +633,7 @@ response = client.messages.create(
 )
 ```
 
-### Using Both Together
+### Using Both Together / 两者结合使用
 
 ```python
 response = client.messages.create(

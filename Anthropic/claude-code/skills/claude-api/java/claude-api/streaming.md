@@ -1,6 +1,7 @@
-# Streaming - Java
+<!-- BILINGUAL-EN-ZH -->
+# Streaming - Java / 流式传输 - Java
 
-## Streaming
+## Streaming / 流式传输
 
 ```java
 import com.anthropic.core.http.StreamResponse;
@@ -21,4 +22,3 @@ try (StreamResponse<RawMessageStreamEvent> streamResponse = client.messages().cr
 ```
 
 ---
-

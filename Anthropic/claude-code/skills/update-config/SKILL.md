@@ -1,67 +1,100 @@
+<!-- BILINGUAL-EN-ZH -->
 ---
 name: update-config
 description: 'Use this skill to configure the Claude Code harness via settings.json. Automated behaviors ("from now on when X", "each time X", "whenever X", "before/after X") require hooks configured in settings.json - the harness executes these, not Claude, so memory/preferences cannot fulfill them. Also use for: permissions ("allow X", "add permission", "move permission to"), env vars ("set X=Y"), hook troubleshooting, or any changes to settings.json/settings.local.json files. Examples: "allow npm commands", "add bq permission to global settings", "move permission to user settings", "set DEBUG=true", "when claude stops show X". For simple settings like theme/model, suggest the /config command.'
 ---
 
-# Update Config Skill
+# Update Config Skill / Update Config 技能
 
 Modify Claude Code configuration by updating settings.json files.
 
-## When Hooks Are Required (Not Memory)
+通过更新 settings.json 文件来修改 Claude Code 配置。
+
+## When Hooks Are Required (Not Memory) / 何时需要钩子（而非记忆）
 
 If the user wants something to happen automatically in response to an EVENT, they need a **hook** configured in settings.json. Memory/preferences cannot trigger automated actions.
 
+如果用户希望某件事在响应某个事件（EVENT）时自动发生，就需要在 settings.json 中配置一个**钩子（hook）**。记忆/偏好无法触发自动化操作。
+
 **These require hooks:**
 - "Before compacting, ask me what to preserve" → PreCompact hook
+  "压缩前，问我要保留什么" → PreCompact 钩子
 - "After writing files, run prettier" → PostToolUse hook with Write|Edit matcher
+  "写完文件后，运行 prettier" → 带 Write|Edit 匹配器的 PostToolUse 钩子
 - "When I run bash commands, log them" → PreToolUse hook with Bash matcher
+  "我运行 bash 命令时，记录它们" → 带 Bash 匹配器的 PreToolUse 钩子
 - "Always run tests after code changes" → PostToolUse hook
+  "代码更改后始终运行测试" → PostToolUse 钩子
 
 **Hook events:** PreToolUse, PostToolUse, PreCompact, PostCompact, Stop, Notification, SessionStart
 
-## CRITICAL: Read Before Write
+**钩子事件：** PreToolUse、PostToolUse、PreCompact、PostCompact、Stop、Notification、SessionStart
+
+## CRITICAL: Read Before Write / 关键：先读后写
 
 **Always read the existing settings file before making changes.** Merge new settings with existing ones - never replace the entire file.
 
-## CRITICAL: Use AskUserQuestion for Ambiguity
+**修改前务必先读取现有的设置文件。** 将新设置与现有设置合并——绝不整体替换文件。
+
+## CRITICAL: Use AskUserQuestion for Ambiguity / 关键：有歧义时使用 AskUserQuestion
 
 When the user's request is ambiguous, use AskUserQuestion to clarify:
 - Which settings file to modify (user/project/local)
+  要修改哪个设置文件（user/project/local）
 - Whether to add to existing arrays or replace them
+  是添加到现有数组还是替换它们
 - Specific values when multiple options exist
+  存在多个选项时确定具体取值
 
-## Decision: /config command vs Direct Edit
+## Decision: /config command vs Direct Edit / 决策：/config 命令还是直接编辑
 
 **Suggest the `/config` slash command** for these simple settings:
 - `theme`, `editorMode`, `verbose`, `model`
+  `theme`、`editorMode`、`verbose`、`model`
 - `language`, `alwaysThinkingEnabled`
+  `language`、`alwaysThinkingEnabled`
 - `permissions.defaultMode`
+  `permissions.defaultMode`
 
 **Edit settings.json directly** for:
 - Hooks (PreToolUse, PostToolUse, etc.)
+  钩子（PreToolUse、PostToolUse 等）
 - Complex permission rules (allow/deny arrays)
+  复杂的权限规则（allow/deny 数组）
 - Environment variables
+  环境变量
 - MCP server configuration
+  MCP 服务器配置
 - Plugin configuration
+  插件配置
 
-## Workflow
+## Workflow / 工作流
 
 1. **Clarify intent** - Ask if the request is ambiguous
+   **澄清意图** - 请求有歧义时先行询问
 2. **Read existing file** - Use Read tool on the target settings file
+   **读取现有文件** - 对目标设置文件使用 Read 工具
 3. **Merge carefully** - Preserve existing settings, especially arrays
+   **谨慎合并** - 保留现有设置，尤其是数组
 4. **Edit file** - Use Edit tool (if file doesn't exist, ask user to create it first)
+   **编辑文件** - 使用 Edit 工具（若文件不存在，先请用户创建）
 5. **Confirm** - Tell user what was changed
+   **确认** - 告知用户所做的更改
 
-## Merging Arrays (Important!)
+## Merging Arrays (Important!) / 合并数组（重要！）
 
 When adding to permission arrays or hook arrays, **merge with existing**, don't replace:
 
+向权限数组或钩子数组添加内容时，**与现有内容合并**，不要替换：
+
 **WRONG** (replaces existing permissions):
+**错误**（会替换现有权限）：
 ```json
 { "permissions": { "allow": ["Bash(npm *)"] } }
 ```
 
 **RIGHT** (preserves existing + adds new):
+**正确**（保留现有权限并添加新权限）：
 ```json
 {
   "permissions": {
@@ -74,9 +107,11 @@ When adding to permission arrays or hook arrays, **merge with existing**, don't 
 }
 ```
 
-## Settings File Locations
+## Settings File Locations / 设置文件位置
 
 Choose the appropriate file based on scope:
+
+根据作用范围选择合适的文件：
 
 | File | Scope | Git | Use For |
 |------|-------|-----|---------|
@@ -84,11 +119,21 @@ Choose the appropriate file based on scope:
 | `.claude/settings.json` | Project | Commit | Team-wide hooks, permissions, plugins |
 | `.claude/settings.local.json` | Project | Gitignore | Personal overrides for this project |
 
+| 文件 | 作用范围 | Git | 用途 |
+|------|---------|-----|------|
+| `~/.claude/settings.json` | 全局 | 不适用 | 所有项目中的个人偏好 |
+| `.claude/settings.json` | 项目 | 提交 | 团队范围的钩子、权限、插件 |
+| `.claude/settings.local.json` | 项目 | 加入 Gitignore | 本项目的个人覆盖设置 |
+
 Settings load in order: user → project → local (later overrides earlier).
 
-## Settings Schema Reference
+设置按以下顺序加载：user → project → local（后者覆盖前者）。
 
-### Permissions
+【评论】三层设置按优先级叠加是 Claude Code 配置治理的核心模式；后文 Schema 中多处标注"通常由企业管理员在托管设置（managed settings）中配置"，体现出企业集中管控与个人本地覆盖并存的分层设计。
+
+## Settings Schema Reference / 设置 Schema 参考
+
+### Permissions / 权限
 ```json
 {
   "permissions": {
@@ -103,10 +148,13 @@ Settings load in order: user → project → local (later overrides earlier).
 
 **Permission Rule Syntax:**
 - Exact match: `"Bash(npm run test)"`
+  精确匹配：`"Bash(npm run test)"`
 - Prefix wildcard: `"Bash(git *)"` - matches `git`, `git status`, `git commit`, etc.
+  前缀通配符：`"Bash(git *)"` - 匹配 `git`、`git status`、`git commit` 等
 - Tool only: `"Read"` - allows all Read operations
+  仅工具名：`"Read"` - 允许所有 Read 操作
 
-### Environment Variables
+### Environment Variables / 环境变量
 ```json
 {
   "env": {
@@ -116,7 +164,7 @@ Settings load in order: user → project → local (later overrides earlier).
 }
 ```
 
-### Model & Agent
+### Model & Agent / 模型与代理
 ```json
 {
   "model": "sonnet",  // or "fable", "opus", "haiku", full model ID
@@ -125,7 +173,7 @@ Settings load in order: user → project → local (later overrides earlier).
 }
 ```
 
-### Attribution (Commits & PRs)
+### Attribution (Commits & PRs) / 署名（提交与 PR）
 ```json
 {
   "attribution": {
@@ -136,7 +184,9 @@ Settings load in order: user → project → local (later overrides earlier).
 ```
 Set `commit` or `pr` to empty string `""` to hide that attribution.
 
-### MCP Server Management
+将 `commit` 或 `pr` 设为空字符串 `""` 可隐藏对应署名。
+
+### MCP Server Management / MCP 服务器管理
 ```json
 {
   "enableAllProjectMcpServers": true,
@@ -145,7 +195,7 @@ Set `commit` or `pr` to empty string `""` to hide that attribution.
 }
 ```
 
-### Plugins
+### Plugins / 插件
 ```json
 {
   "enabledPlugins": {
@@ -155,23 +205,36 @@ Set `commit` or `pr` to empty string `""` to hide that attribution.
 ```
 Plugin syntax: `plugin-name@source` where source is `claude-code-marketplace`, `claude-plugins-official`, or `builtin`.
 
-### Other Settings
+插件语法：`plugin-name@source`，其中 source 为 `claude-code-marketplace`、`claude-plugins-official` 或 `builtin`。
+
+### Other Settings / 其他设置
 - `language`: Preferred response language (e.g., "japanese")
+  `language`：首选回复语言（如 "japanese"）
 - `cleanupPeriodDays`: Days to keep transcripts before automatic cleanup (default: 30; minimum 1)
+  `cleanupPeriodDays`：会话记录在自动清理前保留的天数（默认：30；最小 1）
 - `respectGitignore`: Whether to respect .gitignore (default: true)
+  `respectGitignore`：是否遵守 .gitignore（默认：true）
 - `spinnerTipsEnabled`: Show tips in spinner
+  `spinnerTipsEnabled`：在加载动画中显示提示
 - `timeFormat`: Clock format for times shown in the UI: "auto" (default), "12-hour", "24-hour", "24-hour-utc", or a strftime pattern such as "%H:%M"
+  `timeFormat`：界面中所显示时间的时钟格式："auto"（默认）、"12-hour"、"24-hour"、"24-hour-utc"，或 strftime 模式（如 "%H:%M"）
 - `timeZone`: IANA time zone for times shown in the UI, e.g. "UTC" (default: system time zone)
+  `timeZone`：界面中所显示时间使用的 IANA 时区，如 "UTC"（默认：系统时区）
 - `spinnerVerbs`: Customize spinner verbs (`{ "mode": "append" | "replace", "verbs": [...] }`)
+  `spinnerVerbs`：自定义加载动画动词（`{ "mode": "append" | "replace", "verbs": [...] }`）
 - `spinnerTipsOverride`: Override spinner tips (`{ "excludeDefault": true, "tips": ["Custom tip"] }`)
+  `spinnerTipsOverride`：覆盖加载动画提示（`{ "excludeDefault": true, "tips": ["Custom tip"] }`）
 - `syntaxHighlightingDisabled`: Disable diff highlighting
+  `syntaxHighlightingDisabled`：禁用差异高亮
 
 
-## Hooks Configuration
+## Hooks Configuration / 钩子配置
 
 Hooks run commands at specific points in Claude Code's lifecycle.
 
-### Hook Structure
+钩子在 Claude Code 生命周期的特定时点运行命令。
+
+### Hook Structure / 钩子结构
 ```json
 {
   "hooks": {
@@ -192,7 +255,7 @@ Hooks run commands at specific points in Claude Code's lifecycle.
 }
 ```
 
-### Hook Events
+### Hook Events / 钩子事件
 
 | Event | Matcher | Purpose |
 |-------|---------|---------|
@@ -207,28 +270,50 @@ Hooks run commands at specific points in Claude Code's lifecycle.
 | UserPromptSubmit | - | When user submits |
 | SessionStart | - | When session starts |
 
+| 事件 | 匹配器 | 用途 |
+|------|--------|------|
+| PermissionRequest | 工具名称 | 在权限提示出现前运行 |
+| PreToolUse | 工具名称 | 在工具运行前运行，可阻止执行 |
+| PostToolUse | 工具名称 | 在工具成功运行后运行 |
+| PostToolUseFailure | 工具名称 | 在工具失败后运行 |
+| Notification | 通知类型 | 收到通知时运行 |
+| Stop | - | Claude 停止时运行（包括 clear、resume、compact） |
+| PreCompact | "manual"/"auto" | 压缩之前 |
+| PostCompact | "manual"/"auto" | 压缩之后（接收摘要） |
+| UserPromptSubmit | - | 用户提交时 |
+| SessionStart | - | 会话开始时 |
+
 **Common tool matchers:** `Bash`, `Write`, `Edit`, `Read`, `Glob`, `Grep`
 
-### Hook Types
+**常用工具匹配器：** `Bash`、`Write`、`Edit`、`Read`、`Glob`、`Grep`
+
+### Hook Types / 钩子类型
 
 **1. Command Hook** - Runs a shell command:
+**1. Command Hook（命令钩子）** - 运行 shell 命令：
 ```json
 { "type": "command", "command": "prettier --write $FILE", "timeout": 30 }
 ```
 
 **2. Prompt Hook** - Evaluates a condition with LLM:
+**2. Prompt Hook（提示钩子）** - 用 LLM 评估条件：
 ```json
 { "type": "prompt", "prompt": "Is this safe? $ARGUMENTS" }
 ```
 Only available for tool events: PreToolUse, PostToolUse, PermissionRequest.
 
+仅适用于工具事件：PreToolUse、PostToolUse、PermissionRequest。
+
 **3. Agent Hook** - Runs an agent with tools:
+**3. Agent Hook（代理钩子）** - 运行一个带工具的代理：
 ```json
 { "type": "agent", "prompt": "Verify tests pass: $ARGUMENTS" }
 ```
 Only available for tool events: PreToolUse, PostToolUse, PermissionRequest.
 
-### Hook Input (stdin JSON)
+仅适用于工具事件：PreToolUse、PostToolUse、PermissionRequest。
+
+### Hook Input (stdin JSON) / 钩子输入（stdin JSON）
 ```json
 {
   "session_id": "abc123",
@@ -238,9 +323,11 @@ Only available for tool events: PreToolUse, PostToolUse, PermissionRequest.
 }
 ```
 
-### Hook JSON Output
+### Hook JSON Output / 钩子 JSON 输出
 
 Hooks can return JSON to control behavior:
+
+钩子可以返回 JSON 来控制行为：
 
 ```json
 {
@@ -259,20 +346,32 @@ Hooks can return JSON to control behavior:
 
 **Fields:**
 - `systemMessage` - Display a message to the user (all hooks)
+  `systemMessage` - 向用户显示一条消息（所有钩子）
 - `continue` - Set to `false` to block/stop (default: true)
+  `continue` - 设为 `false` 可阻止/停止（默认：true）
 - `stopReason` - Message shown when `continue` is false
+  `stopReason` - `continue` 为 false 时显示的消息
 - `suppressOutput` - Hide stdout from transcript (default: false)
+  `suppressOutput` - 在会话记录中隐藏 stdout（默认：false）
 - `decision` - "block" for PostToolUse/Stop/UserPromptSubmit hooks (deprecated for PreToolUse, use hookSpecificOutput.permissionDecision instead)
+  `decision` - PostToolUse/Stop/UserPromptSubmit 钩子使用 "block"（在 PreToolUse 中已弃用，请改用 hookSpecificOutput.permissionDecision）
 - `reason` - Explanation for decision
+  `reason` - 决定的解释说明
 - `hookSpecificOutput` - Event-specific output (must include `hookEventName`):
+  `hookSpecificOutput` - 事件特定的输出（必须包含 `hookEventName`）：
   - `additionalContext` - Text injected into model context
+    `additionalContext` - 注入模型上下文的文本
   - `permissionDecision` - "allow", "deny", or "ask" (PreToolUse only)
+    `permissionDecision` - "allow"、"deny" 或 "ask"（仅限 PreToolUse）
   - `permissionDecisionReason` - Reason for the permission decision (PreToolUse only)
+    `permissionDecisionReason` - 权限决定的原因（仅限 PreToolUse）
   - `updatedInput` - Modified tool input (PreToolUse only)
+    `updatedInput` - 修改后的工具输入（仅限 PreToolUse）
 
-### Common Patterns
+### Common Patterns / 常见模式
 
 **Auto-format after writes:**
+**写入后自动格式化：**
 ```json
 {
   "hooks": {
@@ -288,6 +387,7 @@ Hooks can return JSON to control behavior:
 ```
 
 **Log all bash commands:**
+**记录所有 bash 命令：**
 ```json
 {
   "hooks": {
@@ -303,14 +403,18 @@ Hooks can return JSON to control behavior:
 ```
 
 **Stop hook that displays message to user:**
+**向用户显示消息的 Stop 钩子：**
 
 Command must output JSON with `systemMessage` field:
+
+命令必须输出带 `systemMessage` 字段的 JSON：
 ```bash
 # Example command that outputs: {"systemMessage": "Session complete!"}
 echo '{"systemMessage": "Session complete!"}'
 ```
 
 **Run tests after code changes:**
+**代码更改后运行测试：**
 ```json
 {
   "hooks": {
@@ -326,54 +430,83 @@ echo '{"systemMessage": "Session complete!"}'
 ```
 
 
-## Constructing a Hook (with verification)
+## Constructing a Hook (with verification) / 构建钩子（含验证）
 
 Given an event, matcher, target file, and desired behavior, follow this flow. Each step catches a different failure class — a hook that silently does nothing is worse than no hook.
 
+给定事件、匹配器、目标文件和期望行为后，按以下流程操作。每一步捕获的是一类不同的故障——一个静默无效的钩子比没有钩子更糟。
+
+【评论】此流程体现"防静默失败"的工程取向：钩子写入后必须经过管道测试、schema 校验与触发验证三道检查，且无论验证成败都要求清理测试痕迹。
+
 1. **Dedup check.** Read the target file. If a hook already exists on the same event+matcher, show the existing command and ask: keep it, replace it, or add alongside.
+   **去重检查。** 读取目标文件。若相同 event+matcher 上已存在钩子，展示现有命令并询问：保留、替换，还是并列添加。
 
 2. **Construct the command for THIS project — don't assume.** The hook receives JSON on stdin. Build a command that:
+   **为本项目构建命令——不要臆测。** 钩子通过 stdin 接收 JSON。构建的命令应满足：
    - Extracts any needed payload safely — use `jq -r` into a quoted variable or `{ read -r f; ... "$f"; }`, NOT unquoted `| xargs` (splits on spaces)
+     安全地提取所需的有效载荷——用 `jq -r` 输出到带引号的变量或 `{ read -r f; ... "$f"; }`，不要用不带引号的 `| xargs`（会按空格拆分）
    - Invokes the underlying tool the way this project runs it (npx/bunx/yarn/pnpm? Makefile target? globally-installed?)
+     以本项目实际运行该工具的方式调用它（npx/bunx/yarn/pnpm？Makefile 目标？全局安装？）
    - Skips inputs the tool doesn't handle (formatters often have `--ignore-unknown`; if not, guard by extension)
+     跳过该工具不处理的输入（格式化工具通常有 `--ignore-unknown`；若无，则按扩展名加以防护）
    - Stays RAW for now — no `|| true`, no stderr suppression. You'll wrap it after the pipe-test passes.
+     暂时保持原始状态——不加 `|| true`，不抑制 stderr。待管道测试通过后再包装。
 
 3. **Pipe-test the raw command.** Synthesize the stdin payload the hook will receive and pipe it directly:
+   **对原始命令做管道测试。** 构造钩子将收到的 stdin 有效载荷并直接通过管道传入：
    - `Pre|PostToolUse` on `Write|Edit`: `echo '{"tool_name":"Edit","tool_input":{"file_path":"<a real file from this repo>"}}' | <cmd>`
+     `Write|Edit` 上的 `Pre|PostToolUse`：`echo '{"tool_name":"Edit","tool_input":{"file_path":"<a real file from this repo>"}}' | <cmd>`
    - `Pre|PostToolUse` on `Bash`: `echo '{"tool_name":"Bash","tool_input":{"command":"ls"}}' | <cmd>`
+     `Bash` 上的 `Pre|PostToolUse`：`echo '{"tool_name":"Bash","tool_input":{"command":"ls"}}' | <cmd>`
    - `Stop`/`UserPromptSubmit`/`SessionStart`: most commands don't read stdin, so `echo '{}' | <cmd>` suffices
+     `Stop`/`UserPromptSubmit`/`SessionStart`：多数命令不读取 stdin，用 `echo '{}' | <cmd>` 即可
 
    Check exit code AND side effect (file actually formatted, test actually ran). If it fails you get a real error — fix (wrong package manager? tool not installed? jq path wrong?) and retest. Once it works, wrap with `2>/dev/null || true` (unless the user wants a blocking check).
+   同时检查退出码和副作用（文件确实被格式化、测试确实运行了）。若失败会得到真实错误——修复（包管理器不对？工具未安装？jq 路径错误？）后重试。一旦成功，再用 `2>/dev/null || true` 包装（除非用户想要阻塞式检查）。
 
 4. **Write the JSON.** Merge into the target file (schema shape in the "Hook Structure" section above). If this creates `.claude/settings.local.json` for the first time, add it to .gitignore — the Write tool doesn't auto-gitignore it.
+   **写入 JSON。** 合并进目标文件（schema 形状见上方"Hook Structure"一节）。如果这是首次创建 `.claude/settings.local.json`，将其加入 .gitignore——Write 工具不会自动将其加入 gitignore。
 
 5. **Validate syntax + schema in one shot:**
+   **一次性校验语法 + schema：**
 
    `jq -e '.hooks.<event>[] | select(.matcher == "<matcher>") | .hooks[] | select(.type == "command") | .command' <target-file>`
 
    Exit 0 + prints your command = correct. Exit 4 = matcher doesn't match. Exit 5 = malformed JSON or wrong nesting. A broken settings.json silently disables ALL settings from that file — fix any pre-existing malformation too.
+   退出码 0 且打印出你的命令 = 正确。退出码 4 = 匹配器不匹配。退出码 5 = JSON 畸形或嵌套错误。一个损坏的 settings.json 会静默禁用该文件中的全部设置——因此也要修复任何先前存在的格式错误。
 
 6. **Prove the hook fires** — only for `Pre|PostToolUse` on a matcher you can trigger in-turn (`Write|Edit` via Edit, `Bash` via Bash). `Stop`/`UserPromptSubmit`/`SessionStart` fire outside this turn — skip to step 7.
+   **证明钩子确实触发**——仅适用于本轮内可触发的匹配器上的 `Pre|PostToolUse`（用 Edit 触发 `Write|Edit`，用 Bash 触发 `Bash`）。`Stop`/`UserPromptSubmit`/`SessionStart` 在本轮之外触发——直接跳到第 7 步。
 
    For a **formatter** on `PostToolUse`/`Write|Edit`: introduce a detectable violation via Edit (two consecutive blank lines, bad indentation, missing semicolon — something this formatter corrects; NOT trailing whitespace, Edit strips that before writing), re-read, confirm the hook **fixed** it. For **anything else**: temporarily prefix the command in settings.json with `echo "$(date) hook fired" >> /tmp/claude-hook-check.txt; `, trigger the matching tool (Edit for `Write|Edit`, a harmless `true` for `Bash`), read the sentinel file.
+   对于 `PostToolUse`/`Write|Edit` 上的**格式化工具**：通过 Edit 制造一个可检测的违规（两个连续空行、糟糕的缩进、缺失分号——即该格式化工具会纠正的问题；不要用行尾空白，Edit 在写入前会将其去除），重新读取，确认钩子**修复**了它。对于**其他情况**：暂时在 settings.json 中的命令前加上 `echo "$(date) hook fired" >> /tmp/claude-hook-check.txt; ` 前缀，触发匹配的工具（`Write|Edit` 用 Edit，`Bash` 用无害的 `true`），然后查看哨兵文件。
 
    **Always clean up** — revert the violation, strip the sentinel prefix — whether the proof passed or failed.
+   **务必清理**——撤销违规、去掉哨兵前缀——无论验证通过与否。
 
    **If proof fails but pipe-test passed and `jq -e` passed**: the settings watcher isn't watching `.claude/` — it only watches directories that had a settings file when this session started. The hook is written correctly. Tell the user to open `/hooks` once (reloads config) or restart — you can't do this yourself; `/hooks` is a user UI menu and opening it ends this turn.
+   **若触发验证失败但管道测试和 `jq -e` 均通过**：设置监视器没有监视 `.claude/`——它只监视本会话启动时已存在设置文件的目录。钩子本身的写入是正确的。告知用户打开一次 `/hooks`（会重新加载配置）或重启——你无法代劳；`/hooks` 是用户界面菜单，打开它会结束当前轮次。
 
 7. **Handoff.** Tell the user the hook is live (or needs `/hooks`/restart per the watcher caveat). Point them at `/hooks` to review, edit, or disable it later. The UI only shows "Ran N hooks" if a hook errors or is slow — silent success is invisible by design.
+   **交接。** 告知用户钩子已生效（或按前述监视器注意事项需要 `/hooks`/重启）。指引用户之后可通过 `/hooks` 审查、编辑或禁用钩子。只有在钩子出错或运行缓慢时，界面才会显示"Ran N hooks"——静默成功在设计上不可见。
 
 
-## Example Workflows
+## Example Workflows / 示例工作流
 
-### Adding a Hook
+### Adding a Hook / 添加钩子
 
 User: "Format my code after Claude writes it"
 
+User: "在 Claude 写入后格式化我的代码"
+
 1. **Clarify**: Which formatter? (prettier, gofmt, etc.)
+   **澄清**：使用哪个格式化工具？（prettier、gofmt 等）
 2. **Read**: `.claude/settings.json` (or create if missing)
+   **读取**：`.claude/settings.json`（若缺失则创建）
 3. **Merge**: Add to existing hooks, don't replace
+   **合并**：添加到现有钩子中，不要替换
 4. **Result**:
+   **结果**：
 ```json
 {
   "hooks": {
@@ -388,44 +521,67 @@ User: "Format my code after Claude writes it"
 }
 ```
 
-### Adding Permissions
+### Adding Permissions / 添加权限
 
 User: "Allow npm commands without prompting"
 
-1. **Read**: Existing permissions
-2. **Merge**: Add `Bash(npm *)` to allow array
-3. **Result**: Combined with existing allows
+User: "允许 npm 命令且不提示"
 
-### Environment Variables
+1. **Read**: Existing permissions
+   **读取**：现有权限
+2. **Merge**: Add `Bash(npm *)` to allow array
+   **合并**：将 `Bash(npm *)` 添加到 allow 数组
+3. **Result**: Combined with existing allows
+   **结果**：与现有 allow 项合并
+
+### Environment Variables / 环境变量
 
 User: "Set DEBUG=true"
 
+User: "设置 DEBUG=true"
+
 1. **Decide**: User settings (global) or project settings?
+   **决定**：用户设置（全局）还是项目设置？
 2. **Read**: Target file
+   **读取**：目标文件
 3. **Merge**: Add to env object
+   **合并**：添加到 env 对象
 ```json
 { "env": { "DEBUG": "true" } }
 ```
 
-## Common Mistakes to Avoid
+## Common Mistakes to Avoid / 应避免的常见错误
 
 1. **Replacing instead of merging** - Always preserve existing settings
+   **替换而非合并** - 始终保留现有设置
 2. **Wrong file** - Ask user if scope is unclear
+   **文件选错** - 作用范围不明确时询问用户
 3. **Invalid JSON** - Validate syntax after changes
+   **JSON 无效** - 更改后校验语法
 4. **Forgetting to read first** - Always read before write
+   **忘记先读取** - 务必先读后写
 
-## Troubleshooting Hooks
+## Troubleshooting Hooks / 钩子故障排查
 
 If a hook isn't running:
+
+如果钩子没有运行：
+
 1. **Check the settings file** - Read ~/.claude/settings.json or .claude/settings.json
+   **检查设置文件** - 读取 ~/.claude/settings.json 或 .claude/settings.json
 2. **Verify JSON syntax** - Invalid JSON silently fails
+   **校验 JSON 语法** - 无效的 JSON 会静默失败
 3. **Check the matcher** - Does it match the tool name? (e.g., "Bash", "Write", "Edit")
+   **检查匹配器** - 是否与工具名称匹配？（如 "Bash"、"Write"、"Edit"）
 4. **Check hook type** - Is it "command", "prompt", or "agent"?
+   **检查钩子类型** - 是 "command"、"prompt" 还是 "agent"？
 5. **Test the command** - Run the hook command manually to see if it works
+   **测试命令** - 手动运行钩子命令，确认其是否有效
 6. **Use --debug** - Run `claude --debug` to see hook execution logs
+   **使用 --debug** - 运行 `claude --debug` 查看钩子执行日志
 
 
-## Full Settings JSON Schema
+## Full Settings JSON Schema / 完整设置 JSON Schema
 
 ```json
 {
@@ -5256,3 +5412,4 @@ If a hook isn't running:
   "additionalProperties": {}
 }
 ```
+

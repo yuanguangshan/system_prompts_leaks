@@ -2,10 +2,11 @@
 name: threejs-geometry
 description: Three.js geometry creation - built-in shapes, BufferGeometry, custom geometry, instancing. Use when creating 3D shapes, working with vertices, building custom meshes, or optimizing with instanced rendering.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Geometry
+# Three.js Geometry / Three.js 几何体
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -21,9 +22,9 @@ const mesh = new THREE.Mesh(box, material);
 scene.add(mesh);
 ```
 
-## Built-in Geometries
+## Built-in Geometries / 内置几何体
 
-### Basic Shapes
+### Basic Shapes / 基础形状
 
 ```javascript
 // Box - width, height, depth, widthSegments, heightSegments, depthSegments
@@ -59,7 +60,7 @@ new THREE.TorusKnotGeometry(1, 0.4, 100, 16, 2, 3);
 new THREE.RingGeometry(0.5, 1, 32, 1);
 ```
 
-### Advanced Shapes
+### Advanced Shapes / 进阶形状
 
 ```javascript
 // Capsule - radius, length, capSegments, radialSegments
@@ -83,7 +84,7 @@ const indices = [2, 1, 0, 0, 3, 2, 1, 3, 0, 2, 3, 1];
 new THREE.PolyhedronGeometry(vertices, indices, 1, 0);
 ```
 
-### Path-Based Shapes
+### Path-Based Shapes / 基于路径的形状
 
 ```javascript
 // Lathe - points[], segments, phiStart, phiLength
@@ -122,7 +123,7 @@ const curve = new THREE.CatmullRomCurve3([
 new THREE.TubeGeometry(curve, 64, 0.2, 8, false);
 ```
 
-### Text Geometry
+### Text Geometry / 文本几何体
 
 ```javascript
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
@@ -150,11 +151,13 @@ loader.load("fonts/helvetiker_regular.typeface.json", (font) => {
 });
 ```
 
-## BufferGeometry
+## BufferGeometry / BufferGeometry
 
 The base class for all geometries. Stores data as typed arrays for GPU efficiency.
 
-### Custom BufferGeometry
+所有几何体的基类。数据以类型化数组的形式存储，以获得 GPU 效率。
+
+### Custom BufferGeometry / 自定义 BufferGeometry
 
 ```javascript
 const geometry = new THREE.BufferGeometry();
@@ -214,7 +217,7 @@ geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 // Use with: material.vertexColors = true
 ```
 
-### BufferAttribute Types
+### BufferAttribute Types / BufferAttribute 类型
 
 ```javascript
 // Common attribute types
@@ -234,7 +237,7 @@ new Uint8Array(count * itemSize); // Colors (0-255 range)
 // Index: 1
 ```
 
-### Modifying BufferGeometry
+### Modifying BufferGeometry / 修改 BufferGeometry
 
 ```javascript
 const positions = geometry.attributes.position;
@@ -258,7 +261,7 @@ geometry.computeBoundingBox();
 geometry.computeBoundingSphere();
 ```
 
-### Interleaved Buffers (Advanced)
+### Interleaved Buffers (Advanced) / 交错缓冲区（进阶）
 
 ```javascript
 // More efficient memory layout for large meshes
@@ -280,7 +283,7 @@ geometry.setAttribute(
 ); // size 2, offset 3
 ```
 
-## EdgesGeometry & WireframeGeometry
+## EdgesGeometry & WireframeGeometry / EdgesGeometry 与 WireframeGeometry
 
 ```javascript
 // Edge lines (only hard edges)
@@ -298,7 +301,7 @@ const wireMesh = new THREE.LineSegments(
 );
 ```
 
-## Points
+## Points / 点（Points）
 
 ```javascript
 // Create point cloud
@@ -323,7 +326,7 @@ const points = new THREE.Points(geometry, material);
 scene.add(points);
 ```
 
-## Lines
+## Lines / 线（Lines）
 
 ```javascript
 // Line (connected points)
@@ -366,9 +369,11 @@ segmentsGeometry.setAttribute(
 const segments = new THREE.LineSegments(segmentsGeometry, material);
 ```
 
-## InstancedMesh
+## InstancedMesh / InstancedMesh（实例化网格）
 
 Efficiently render many copies of the same geometry.
+
+高效地渲染同一几何体的多个副本。
 
 ```javascript
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -413,7 +418,7 @@ instancedMesh.instanceColor.needsUpdate = true;
 scene.add(instancedMesh);
 ```
 
-### Update Instance at Runtime
+### Update Instance at Runtime / 运行时更新实例
 
 ```javascript
 // Update single instance
@@ -430,9 +435,11 @@ if (intersects.length > 0) {
 }
 ```
 
-## InstancedBufferGeometry (Advanced)
+## InstancedBufferGeometry (Advanced) / InstancedBufferGeometry（进阶）
 
 For custom per-instance attributes beyond transform/color.
+
+用于变换/颜色之外的自定义逐实例属性。
 
 ```javascript
 const geometry = new THREE.InstancedBufferGeometry();
@@ -452,7 +459,7 @@ geometry.setAttribute("offset", new THREE.InstancedBufferAttribute(offsets, 3));
 // vec3 transformed = position + offset;
 ```
 
-## Geometry Utilities
+## Geometry Utilities / 几何体工具函数
 
 ```javascript
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -474,16 +481,16 @@ const interleaved = BufferGeometryUtils.interleaveAttributes([
 ]);
 ```
 
-## Common Patterns
+## Common Patterns / 常见模式
 
-### Center Geometry
+### Center Geometry / 几何体居中
 
 ```javascript
 geometry.computeBoundingBox();
 geometry.center(); // Move vertices so center is at origin
 ```
 
-### Scale to Fit
+### Scale to Fit / 缩放至适配
 
 ```javascript
 geometry.computeBoundingBox();
@@ -493,7 +500,7 @@ const maxDim = Math.max(size.x, size.y, size.z);
 geometry.scale(1 / maxDim, 1 / maxDim, 1 / maxDim);
 ```
 
-### Clone and Transform
+### Clone and Transform / 克隆与变换
 
 ```javascript
 const clone = geometry.clone();
@@ -502,7 +509,7 @@ clone.translate(0, 1, 0);
 clone.scale(2, 2, 2);
 ```
 
-### Morph Targets
+### Morph Targets / 形变目标（Morph Targets）
 
 ```javascript
 // Base geometry
@@ -523,13 +530,20 @@ const mesh = new THREE.Mesh(geometry, material);
 mesh.morphTargetInfluences[0] = 0.5; // 50% blend
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Use indexed geometry**: Reuse vertices with indices
+   **使用索引几何体**：通过索引复用顶点
 2. **Merge static meshes**: Reduce draw calls with `mergeGeometries`
+   **合并静态网格**：使用 `mergeGeometries` 减少 draw call
 3. **Use InstancedMesh**: For many identical objects
+   **使用 InstancedMesh**：适用于大量相同对象
 4. **Choose appropriate segment counts**: More segments = smoother but slower
+   **选择合适的分段数**：分段越多越平滑，但速度越慢
 5. **Dispose unused geometry**: `geometry.dispose()`
+   **释放不再使用的几何体**：`geometry.dispose()`
+
+【评论】其中"释放几何体"一条尤其实用：WebGL 资源由 GPU 持有，仅靠 JavaScript 垃圾回收无法释放，漏调 dispose 是 three.js 场景中常见的内存泄漏来源。
 
 ```javascript
 // Good segment counts for common uses
@@ -541,8 +555,11 @@ new THREE.SphereGeometry(1, 16, 16); // Performance mode
 geometry.dispose();
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-fundamentals` - Scene setup and Object3D
+  `threejs-fundamentals` - 场景设置与 Object3D
 - `threejs-materials` - Material types for meshes
+  `threejs-materials` - 网格的材质类型
 - `threejs-shaders` - Custom vertex manipulation
+  `threejs-shaders` - 自定义顶点操作

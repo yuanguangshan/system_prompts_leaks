@@ -10,4 +10,7 @@ schedule:
 metadata:
   created_by: system
 ---
+<!-- BILINGUAL-EN-ZH -->
 Run the heartbeat checklist from HEARTBEAT.md.
+
+执行 HEARTBEAT.md 中的心跳检查清单。

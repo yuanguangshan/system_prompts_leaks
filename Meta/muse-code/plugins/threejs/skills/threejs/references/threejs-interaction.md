@@ -2,10 +2,11 @@
 name: threejs-interaction
 description: Three.js interaction - raycasting, controls, mouse/touch input, object selection. Use when handling user input, implementing click detection, adding camera controls, or creating interactive 3D experiences.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Interaction
+# Three.js Interaction / Three.js 交互
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -34,9 +35,9 @@ function onClick(event) {
 window.addEventListener("click", onClick);
 ```
 
-## Raycaster
+## Raycaster / 射线投射器（Raycaster）
 
-### Basic Raycasting
+### Basic Raycasting / 基础射线投射
 
 ```javascript
 const raycaster = new THREE.Raycaster();
@@ -64,7 +65,7 @@ const intersects = raycaster.intersectObjects(objects, recursive);
 // }
 ```
 
-### Mouse Position Conversion
+### Mouse Position Conversion / 鼠标位置转换
 
 ```javascript
 const mouse = new THREE.Vector2();
@@ -83,7 +84,7 @@ function updateMouseCanvas(event, canvas) {
 }
 ```
 
-### Touch Support
+### Touch Support / 触摸支持
 
 ```javascript
 function onTouchStart(event) {
@@ -106,7 +107,7 @@ function onTouchStart(event) {
 renderer.domElement.addEventListener("touchstart", onTouchStart);
 ```
 
-### Raycaster Options
+### Raycaster Options / Raycaster 选项
 
 ```javascript
 const raycaster = new THREE.Raycaster();
@@ -123,7 +124,7 @@ raycaster.params.Points.threshold = 0.1;
 raycaster.layers.set(1);
 ```
 
-### Efficient Raycasting
+### Efficient Raycasting / 高效射线投射
 
 ```javascript
 // Only check specific objects
@@ -145,9 +146,9 @@ function onMouseMove(event) {
 }
 ```
 
-## Camera Controls
+## Camera Controls / 相机控制
 
-### OrbitControls
+### OrbitControls / 轨道控制器（OrbitControls）
 
 ```javascript
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -187,7 +188,7 @@ function animate() {
 }
 ```
 
-### FlyControls
+### FlyControls / 飞行控制器（FlyControls）
 
 ```javascript
 import { FlyControls } from "three/addons/controls/FlyControls.js";
@@ -204,7 +205,7 @@ function animate() {
 }
 ```
 
-### FirstPersonControls
+### FirstPersonControls / 第一人称控制器（FirstPersonControls）
 
 ```javascript
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
@@ -222,7 +223,7 @@ function animate() {
 }
 ```
 
-### PointerLockControls
+### PointerLockControls / 指针锁定控制器（PointerLockControls）
 
 ```javascript
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
@@ -272,7 +273,7 @@ function animate() {
 }
 ```
 
-### TrackballControls
+### TrackballControls / 轨迹球控制器（TrackballControls）
 
 ```javascript
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
@@ -288,7 +289,7 @@ function animate() {
 }
 ```
 
-### MapControls
+### MapControls / 地图控制器（MapControls）
 
 ```javascript
 import { MapControls } from "three/addons/controls/MapControls.js";
@@ -300,9 +301,11 @@ controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 ```
 
-## TransformControls
+## TransformControls / 变换控制器（TransformControls）
 
 Gizmo for moving/rotating/scaling objects.
+
+用于移动/旋转/缩放物体的 Gizmo。
 
 ```javascript
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -351,9 +354,11 @@ window.addEventListener("keydown", (event) => {
 });
 ```
 
-## DragControls
+## DragControls / 拖拽控制器（DragControls）
 
 Drag objects directly.
+
+直接拖拽物体。
 
 ```javascript
 import { DragControls } from "three/addons/controls/DragControls.js";
@@ -381,9 +386,9 @@ dragControls.addEventListener("dragend", (event) => {
 });
 ```
 
-## Selection System
+## Selection System / 选择系统
 
-### Click to Select
+### Click to Select / 点击选择
 
 ```javascript
 const raycaster = new THREE.Raycaster();
@@ -412,7 +417,7 @@ function onMouseDown(event) {
 }
 ```
 
-### Box Selection
+### Box Selection / 框选
 
 ```javascript
 import { SelectionBox } from "three/addons/interactive/SelectionBox.js";
@@ -451,7 +456,7 @@ document.addEventListener("pointerup", (event) => {
 });
 ```
 
-### Hover Effects
+### Hover Effects / 悬停效果
 
 ```javascript
 const raycaster = new THREE.Raycaster();
@@ -488,7 +493,7 @@ function onMouseMove(event) {
 window.addEventListener("mousemove", onMouseMove);
 ```
 
-## Keyboard Input
+## Keyboard Input / 键盘输入
 
 ```javascript
 const keys = {};
@@ -513,9 +518,9 @@ function update() {
 }
 ```
 
-## World-Screen Coordinate Conversion
+## World-Screen Coordinate Conversion / 世界坐标-屏幕坐标转换
 
-### World to Screen
+### World to Screen / 世界坐标转屏幕坐标
 
 ```javascript
 function worldToScreen(position, camera) {
@@ -534,7 +539,7 @@ element.style.left = screenPos.x + "px";
 element.style.top = screenPos.y + "px";
 ```
 
-### Screen to World
+### Screen to World / 屏幕坐标转世界坐标
 
 ```javascript
 function screenToWorld(screenX, screenY, camera, targetZ = 0) {
@@ -553,7 +558,7 @@ function screenToWorld(screenX, screenY, camera, targetZ = 0) {
 }
 ```
 
-### Ray-Plane Intersection
+### Ray-Plane Intersection / 射线-平面相交
 
 ```javascript
 function getRayPlaneIntersection(mouse, camera, plane) {
@@ -571,7 +576,7 @@ const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 const worldPos = getRayPlaneIntersection(mouse, camera, groundPlane);
 ```
 
-## Event Handling Best Practices
+## Event Handling Best Practices / 事件处理最佳实践
 
 ```javascript
 class InteractionManager {
@@ -634,13 +639,18 @@ interaction.addClickable(mesh, (intersect) => {
 });
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Limit raycasts**: Throttle mousemove handlers
+   **限制射线投射**：对 mousemove 处理器做节流
 2. **Use layers**: Filter raycast targets
+   **使用图层**：过滤射线投射目标
 3. **Simple collision meshes**: Use invisible simpler geometry for raycasting
+   **简化碰撞网格**：使用不可见的更简单几何体进行射线投射
 4. **Disable controls when not needed**: `controls.enabled = false`
+   **不需要时禁用控制器**：`controls.enabled = false`
 5. **Batch updates**: Group interaction checks
+   **批量更新**：将交互检查分组进行
 
 ```javascript
 // Use simpler geometry for raycasting
@@ -653,8 +663,11 @@ collisionMesh.userData.target = complexMesh;
 clickables.push(collisionMesh);
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-fundamentals` - Camera and scene setup
+  `threejs-fundamentals` - 相机与场景设置
 - `threejs-animation` - Animating interactions
+  `threejs-animation` - 交互动画
 - `threejs-shaders` - Visual feedback effects
+  `threejs-shaders` - 视觉反馈效果

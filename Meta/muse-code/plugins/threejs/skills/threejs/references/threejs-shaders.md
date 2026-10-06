@@ -2,10 +2,11 @@
 name: threejs-shaders
 description: Three.js shaders - GLSL, ShaderMaterial, uniforms, custom effects. Use when creating custom visual effects, modifying vertices, writing fragment shaders, or extending built-in materials.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Shaders
+# Three.js Shaders / Three.js 着色器
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -33,11 +34,13 @@ const material = new THREE.ShaderMaterial({
 material.uniforms.time.value = clock.getElapsedTime();
 ```
 
-## ShaderMaterial vs RawShaderMaterial
+## ShaderMaterial vs RawShaderMaterial / ShaderMaterial 与 RawShaderMaterial
 
-### ShaderMaterial
+### ShaderMaterial / ShaderMaterial
 
 Three.js provides built-in uniforms and attributes.
+
+Three.js 提供内置的 uniform 和 attribute。
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -67,9 +70,11 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### RawShaderMaterial
+### RawShaderMaterial / RawShaderMaterial
 
 Full control - you define everything.
+
+完全控制——一切由你自己定义。
 
 ```javascript
 const material = new THREE.RawShaderMaterial({
@@ -98,9 +103,9 @@ const material = new THREE.RawShaderMaterial({
 });
 ```
 
-## Uniforms
+## Uniforms / Uniform（着色器统一变量）
 
-### Uniform Types
+### Uniform Types / Uniform 类型
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -134,7 +139,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### GLSL Declarations
+### GLSL Declarations / GLSL 声明
 
 ```glsl
 // In shader
@@ -152,7 +157,7 @@ uniform float floatArray[3];
 uniform vec3 vec3Array[2];
 ```
 
-### Updating Uniforms
+### Updating Uniforms / 更新 Uniform
 
 ```javascript
 // Direct assignment
@@ -166,9 +171,11 @@ material.uniforms.color.value.setHSL(hue, 1, 0.5);
 material.uniforms.matrix.value.copy(mesh.matrixWorld);
 ```
 
-## Varyings
+## Varyings / Varying（顶点-片元传递变量）
 
 Pass data from vertex to fragment shader.
+
+把数据从顶点着色器传递到片元着色器。
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -198,9 +205,9 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-## Common Shader Patterns
+## Common Shader Patterns / 常见着色器模式
 
-### Texture Sampling
+### Texture Sampling / 纹理采样
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -227,7 +234,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### Vertex Displacement
+### Vertex Displacement / 顶点位移
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -257,7 +264,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### Fresnel Effect
+### Fresnel Effect / 菲涅尔效应
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -289,7 +296,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### Noise-Based Effects
+### Noise-Based Effects / 基于噪声的效果
 
 ```glsl
 // Simple noise function
@@ -316,7 +323,7 @@ float noise(vec2 st) {
 float n = noise(vUv * 10.0 + time);
 ```
 
-### Gradient
+### Gradient / 渐变
 
 ```glsl
 // Linear gradient
@@ -331,7 +338,7 @@ float t = smoothstep(0.0, 1.0, vUv.y);
 vec3 color = mix(colorA, colorB, t);
 ```
 
-### Rim Lighting
+### Rim Lighting / 边缘光
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -364,7 +371,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-### Dissolve Effect
+### Dissolve Effect / 溶解效果
 
 ```glsl
 uniform float progress;
@@ -386,11 +393,13 @@ void main() {
 }
 ```
 
-## Extending Built-in Materials
+## Extending Built-in Materials / 扩展内置材质
 
-### onBeforeCompile
+### onBeforeCompile / onBeforeCompile
 
 Modify existing material shaders.
+
+修改现有材质的着色器。
 
 ```javascript
 const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
@@ -421,7 +430,7 @@ if (material.userData.shader) {
 }
 ```
 
-### Common Injection Points
+### Common Injection Points / 常见注入点
 
 ```javascript
 // Vertex shader chunks
@@ -435,9 +444,9 @@ if (material.userData.shader) {
 "#include <fog_fragment>"; // After fog applied
 ```
 
-## GLSL Built-in Functions
+## GLSL Built-in Functions / GLSL 内置函数
 
-### Math Functions
+### Math Functions / 数学函数
 
 ```glsl
 // Basic
@@ -455,7 +464,7 @@ pow(x, y), exp(x), log(x), exp2(x), log2(x)
 sqrt(x), inversesqrt(x)
 ```
 
-### Vector Functions
+### Vector Functions / 向量函数
 
 ```glsl
 // Length and distance
@@ -474,7 +483,7 @@ equal(x, y), notEqual(x, y)
 any(bvec), all(bvec)
 ```
 
-### Texture Functions
+### Texture Functions / 纹理函数
 
 ```glsl
 // GLSL 1.0 (default) - use texture2D/textureCube
@@ -490,7 +499,7 @@ textureCube(sampler, coord)
 textureSize(sampler, lod)
 ```
 
-## Common Material Properties
+## Common Material Properties / 常见材质属性
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -528,9 +537,9 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-## Shader Includes
+## Shader Includes / 着色器包含（Includes）
 
-### Using Three.js Shader Chunks
+### Using Three.js Shader Chunks / 使用 Three.js 着色器代码块
 
 ```javascript
 import { ShaderChunk } from "three";
@@ -550,7 +559,7 @@ const fragmentShader = `
 `;
 ```
 
-### External Shader Files
+### External Shader Files / 外部着色器文件
 
 ```javascript
 // With vite/webpack
@@ -563,7 +572,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-## Instanced Shaders
+## Instanced Shaders / 实例化着色器
 
 ```javascript
 // Instanced attribute
@@ -588,7 +597,7 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-## Debugging Shaders
+## Debugging Shaders / 调试着色器
 
 ```javascript
 // Check for compile errors
@@ -615,13 +624,18 @@ fragmentShader: `
 renderer.debug.checkShaderErrors = true;
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Minimize uniforms**: Group related values into vectors
+   **减少 uniform 数量**：把相关值组合进向量
 2. **Avoid conditionals**: Use mix/step instead of if/else
+   **避免条件分支**：用 mix/step 代替 if/else
 3. **Precalculate**: Move calculations to JS when possible
+   **预计算**：尽可能把计算移到 JS 侧
 4. **Use textures**: For complex functions, use lookup tables
+   **使用纹理**：对复杂函数使用查找表
 5. **Limit overdraw**: Avoid transparent objects when possible
+   **控制过度绘制**：尽量避免使用透明对象
 
 ```glsl
 // Instead of:
@@ -635,8 +649,11 @@ if (value > 0.5) {
 color = mix(colorB, colorA, step(0.5, value));
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-materials` - Built-in material types
+  `threejs-materials` - 内置材质类型
 - `threejs-postprocessing` - Full-screen shader effects
+  `threejs-postprocessing` - 全屏着色器效果
 - `threejs-textures` - Texture sampling in shaders
+  `threejs-textures` - 着色器中的纹理采样

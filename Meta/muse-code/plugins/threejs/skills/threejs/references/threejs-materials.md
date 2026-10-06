@@ -2,10 +2,11 @@
 name: threejs-materials
 description: Three.js materials - PBR, basic, phong, shader materials, material properties. Use when styling meshes, working with textures, creating custom shaders, or optimizing material performance.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Materials
+# Three.js Materials / Three.js 材质
 
-## Quick Start
+## Quick Start / 快速开始
 
 ```javascript
 import * as THREE from "three";
@@ -20,7 +21,7 @@ const material = new THREE.MeshStandardMaterial({
 const mesh = new THREE.Mesh(geometry, material);
 ```
 
-## Material Types Overview
+## Material Types Overview / 材质类型概览
 
 | Material             | Use Case                              | Lighting           |
 | -------------------- | ------------------------------------- | ------------------ |
@@ -35,9 +36,24 @@ const mesh = new THREE.Mesh(geometry, material);
 | ShaderMaterial       | Custom GLSL shaders                   | Custom             |
 | RawShaderMaterial    | Full shader control                   | Custom             |
 
-## MeshBasicMaterial
+| 材质                 | 用途                                   | 光照               |
+| -------------------- | -------------------------------------- | ------------------ |
+| MeshBasicMaterial    | 无光照、平面颜色、线框                 | 否                 |
+| MeshLambertMaterial  | 哑光表面、追求性能                     | 有（仅漫反射）     |
+| MeshPhongMaterial    | 光亮表面、高光                         | 有                 |
+| MeshStandardMaterial | PBR、写实材质                          | 有（PBR）          |
+| MeshPhysicalMaterial | 高级 PBR、清漆层、透射                 | 有（PBR+）         |
+| MeshToonMaterial     | 赛璐璐着色、卡通外观                   | 有（toon）         |
+| MeshNormalMaterial   | 调试法线                               | 否                 |
+| MeshDepthMaterial    | 深度可视化                             | 否                 |
+| ShaderMaterial       | 自定义 GLSL 着色器                     | 自定义             |
+| RawShaderMaterial    | 完全的着色器控制                       | 自定义             |
+
+## MeshBasicMaterial / MeshBasicMaterial
 
 No lighting calculations. Fast, always visible.
+
+无光照计算。速度快，始终可见。
 
 ```javascript
 const material = new THREE.MeshBasicMaterial({
@@ -54,9 +70,11 @@ const material = new THREE.MeshBasicMaterial({
 });
 ```
 
-## MeshLambertMaterial
+## MeshLambertMaterial / MeshLambertMaterial
 
 Diffuse-only lighting. Fast, no specular highlights.
+
+仅漫反射光照。速度快，无高光。
 
 ```javascript
 const material = new THREE.MeshLambertMaterial({
@@ -70,9 +88,11 @@ const material = new THREE.MeshLambertMaterial({
 });
 ```
 
-## MeshPhongMaterial
+## MeshPhongMaterial / MeshPhongMaterial
 
 Specular highlights. Good for shiny, plastic-like surfaces.
+
+具有高光。适合光亮的、类似塑料的表面。
 
 ```javascript
 const material = new THREE.MeshPhongMaterial({
@@ -92,9 +112,11 @@ const material = new THREE.MeshPhongMaterial({
 });
 ```
 
-## MeshStandardMaterial (PBR)
+## MeshStandardMaterial (PBR) / MeshStandardMaterial（PBR）
 
 Physically-based rendering. Recommended for realistic results.
+
+基于物理的渲染。写实效果推荐使用。
 
 ```javascript
 const material = new THREE.MeshStandardMaterial({
@@ -133,9 +155,11 @@ const material = new THREE.MeshStandardMaterial({
 geometry.setAttribute("uv2", geometry.attributes.uv);
 ```
 
-## MeshPhysicalMaterial (Advanced PBR)
+## MeshPhysicalMaterial (Advanced PBR) / MeshPhysicalMaterial（高级 PBR）
 
 Extends MeshStandardMaterial with advanced features.
+
+在 MeshStandardMaterial 基础上扩展了高级特性。
 
 ```javascript
 const material = new THREE.MeshPhysicalMaterial({
@@ -187,7 +211,7 @@ const material = new THREE.MeshPhysicalMaterial({
 });
 ```
 
-### Glass Material Example
+### Glass Material Example / 玻璃材质示例
 
 ```javascript
 const glass = new THREE.MeshPhysicalMaterial({
@@ -201,7 +225,7 @@ const glass = new THREE.MeshPhysicalMaterial({
 });
 ```
 
-### Car Paint Example
+### Car Paint Example / 车漆示例
 
 ```javascript
 const carPaint = new THREE.MeshPhysicalMaterial({
@@ -213,9 +237,11 @@ const carPaint = new THREE.MeshPhysicalMaterial({
 });
 ```
 
-## MeshToonMaterial
+## MeshToonMaterial / MeshToonMaterial
 
 Cel-shaded cartoon look.
+
+赛璐璐着色的卡通外观。
 
 ```javascript
 const material = new THREE.MeshToonMaterial({
@@ -231,9 +257,11 @@ gradientMap.magFilter = THREE.NearestFilter;
 gradientMap.needsUpdate = true;
 ```
 
-## MeshNormalMaterial
+## MeshNormalMaterial / MeshNormalMaterial
 
 Visualize surface normals. Useful for debugging.
+
+可视化表面法线。用于调试。
 
 ```javascript
 const material = new THREE.MeshNormalMaterial({
@@ -242,9 +270,11 @@ const material = new THREE.MeshNormalMaterial({
 });
 ```
 
-## MeshDepthMaterial
+## MeshDepthMaterial / MeshDepthMaterial
 
 Render depth values. Used for shadow maps, DOF effects.
+
+渲染深度值。用于阴影贴图、景深效果。
 
 ```javascript
 const material = new THREE.MeshDepthMaterial({
@@ -252,9 +282,11 @@ const material = new THREE.MeshDepthMaterial({
 });
 ```
 
-## PointsMaterial
+## PointsMaterial / PointsMaterial
 
 For point clouds.
+
+用于点云。
 
 ```javascript
 const material = new THREE.PointsMaterial({
@@ -271,7 +303,7 @@ const material = new THREE.PointsMaterial({
 const points = new THREE.Points(geometry, material);
 ```
 
-## LineBasicMaterial & LineDashedMaterial
+## LineBasicMaterial & LineDashedMaterial / LineBasicMaterial 与 LineDashedMaterial
 
 ```javascript
 // Solid lines
@@ -295,9 +327,11 @@ const line = new THREE.Line(geometry, dashedMaterial);
 line.computeLineDistances();
 ```
 
-## ShaderMaterial
+## ShaderMaterial / ShaderMaterial
 
 Custom GLSL shaders with Three.js uniforms.
+
+带 Three.js uniform 的自定义 GLSL 着色器。
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -336,7 +370,7 @@ const material = new THREE.ShaderMaterial({
 material.uniforms.time.value = clock.getElapsedTime();
 ```
 
-### Built-in Uniforms (auto-provided)
+### Built-in Uniforms (auto-provided) / 内置 uniform（自动提供）
 
 ```glsl
 // Vertex shader
@@ -353,9 +387,11 @@ attribute vec3 normal;
 attribute vec2 uv;
 ```
 
-## RawShaderMaterial
+## RawShaderMaterial / RawShaderMaterial
 
 Full control - no built-in uniforms/attributes.
+
+完全控制——无内置 uniform/属性。
 
 ```javascript
 const material = new THREE.RawShaderMaterial({
@@ -383,9 +419,11 @@ const material = new THREE.RawShaderMaterial({
 });
 ```
 
-## Common Material Properties
+## Common Material Properties / 通用材质属性
 
 All materials share these base properties:
+
+所有材质共享以下基础属性：
 
 ```javascript
 // Visibility
@@ -420,7 +458,7 @@ material.dithering = false;
 material.toneMapped = true;
 ```
 
-## Multiple Materials
+## Multiple Materials / 多材质
 
 ```javascript
 // Assign different materials to geometry groups
@@ -441,7 +479,7 @@ geometry.addGroup(0, 6, 0); // start, count, materialIndex
 geometry.addGroup(6, 6, 1);
 ```
 
-## Environment Maps
+## Environment Maps / 环境贴图
 
 ```javascript
 // Load cube texture
@@ -472,7 +510,7 @@ rgbeLoader.load("environment.hdr", (texture) => {
 });
 ```
 
-## Material Cloning and Modification
+## Material Cloning and Modification / 材质克隆与修改
 
 ```javascript
 // Clone material
@@ -490,13 +528,18 @@ material.needsUpdate = true; // Only needed for some changes
 // - Custom shader code changes
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Reuse materials**: Same material = batched draw calls
+   **复用材质**：相同材质 = 合并绘制调用
 2. **Avoid transparent when possible**: Transparent materials require sorting
+   **尽量避免透明**：透明材质需要排序
 3. **Use alphaTest instead of transparency**: When applicable, faster
+   **用 alphaTest 代替透明**：在适用时更快
 4. **Choose simpler materials**: Basic > Lambert > Phong > Standard > Physical
+   **选择更简单的材质**：Basic > Lambert > Phong > Standard > Physical
 5. **Limit active lights**: Each light adds shader complexity
+   **限制活跃灯光数量**：每盏灯都会增加着色器复杂度
 
 ```javascript
 // Material pooling
@@ -513,8 +556,13 @@ function getMaterial(color) {
 material.dispose();
 ```
 
-## See Also
+【评论】性能提示第 4 条按渲染成本从低到高排列材质等级，反映 Three.js 中着色器复杂度与计算开销随材质类型递增的通用权衡。
+
+## See Also / 另见
 
 - `threejs-textures` - Texture loading and configuration
+  `threejs-textures` - 纹理加载与配置
 - `threejs-shaders` - Custom shader development
+  `threejs-shaders` - 自定义着色器开发
 - `threejs-lighting` - Light interaction with materials
+  `threejs-lighting` - 光照与材质的交互

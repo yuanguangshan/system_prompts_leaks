@@ -1,13 +1,18 @@
-# Overlay Spec — deterministic bubble renderer
+<!-- BILINGUAL-EN-ZH -->
+# Overlay Spec — deterministic bubble renderer / 叠加层规范——确定性气泡渲染器
 
 `../cmm/overlay.py` is the implementation and the source of truth for every
 number below; this file explains intent and why each decision exists. Where
 they disagree, the code wins — fix this file.
 
+`../cmm/overlay.py` 是下方所有数值的实现与事实来源；本文件解释意图以及每个决策存在的原因。两者不一致时，以代码为准——请修复本文件。
+
 Single anti-drift implementation for all bubble quality. Do not re-implement
 bubble UI in a thread.
 
-## Internals (maintainer reference — NOT an agent recipe)
+单一防漂移实现服务于所有气泡质量。不要在线程中重新实现气泡 UI。
+
+## Internals (maintainer reference — NOT an agent recipe) / 内部机制（维护者参考——并非代理操作指南）
 
 `MessageOverlayRenderer.render_frame(t, active_blocks)` returns an RGBA
 layer; `cmm/compose.py` is its only caller, compositing it over the creator
@@ -15,7 +20,9 @@ video and encoding. As an agent you never construct it: the whole pipeline
 runs through `./mm render`, which drives compose for you. Do not write
 driver scripts against this class.
 
-## Canvas scale
+`MessageOverlayRenderer.render_frame(t, active_blocks)` 返回一个 RGBA 图层；`cmm/compose.py` 是它唯一的调用方，负责把它合成到创作者视频之上并编码。作为代理，你绝不要直接构造它：整个流水线通过 `./mm render` 运行，由它替你驱动 compose。不要针对这个类编写驱动脚本。
+
+## Canvas scale / 画布比例
 
 Every number below is the 720x1280 base calibration. The render canvas is
 any 9:16 size (`./mm render --size`; by default the canvas is sized from
@@ -24,13 +31,17 @@ each constant by W/720 at render time, so the chrome is proportionally
 identical at any resolution and bit-identical at 720. Write new constants
 as 720-base values and pass them through `px()`.
 
-## What is locked, and why
+下方所有数值都以 720x1280 为基准标定。渲染画布可以是任意 9:16 尺寸（`./mm render --size`；默认按源素材确定画布尺寸，宽度钳制在 1080-1440）：`overlay.px()` 在渲染时把每个常量乘以 W/720，因此界面装饰元素在任何分辨率下比例一致，在 720 下逐位一致。新常量按 720 基准值编写，并通过 `px()` 传入。
+
+## What is locked, and why / 锁定的内容及其原因
 
 **Type size.** 36px for both Muse and You. Not 32 (reads as tiny UI chrome),
 not 46 (shouts). At 720p this fills ~90% of the usable width, which is what
 makes it legible in a feed. The original bug this guards against: a font
 loader that silently fell back to a 10px face, producing a 192px-wide bubble
 where a correct one is ~589px.
+
+**字号。** Muse 和 You 均为 36px。不是 32（看起来像很小的 UI 装饰），也不是 46（太刺眼）。在 720p 下它会占满约 90% 的可用宽度，这正是它在信息流中清晰可读的原因。它防范的原始缺陷是：字体加载器静默回退到 10px 字形，导致气泡宽度只有 192px，而正确值约为 589px。
 
 **The typeface ships with the skill.** `load_font` reads the product's
 Optimistic AI variable font from `assets/fonts/` and nothing else — it
@@ -41,6 +52,8 @@ points and bubble widths, which would make the locked visuals depend on
 the host. They deliberately do not. Weight rides the variable axes
 (500 body, 700 bold — 400 reads thin over footage).
 
+**字体随技能附带。** `load_font` 只从 `assets/fonts/` 读取产品的 Optimistic AI 可变字体，别无其他——它绝不搜索系统路径，而是抛出 `FontUnavailableError` 而不是降级。不存在静默回退。系统字体与随附副本不可互换：不同的度量会让换行点和气泡宽度发生偏移，使锁定的视觉依赖于宿主环境。设计上刻意避免这一点。字重由可变轴控制（正文 500，粗体 700——400 在视频画面上显得太细）。
+
 **Product bubbles.** The bubbles are the canonical Muse theme the
 renderer draws: Muse (agent) `#FFFFFF` with ink `#111112` text, You
 (user) `#CBE5FF` with ink text, radius 22 product-scale capped at
@@ -48,8 +61,11 @@ half-height (short bubbles go capsule), flat fills with no outline.
 There is NO per-message pill — authorship inside the thread is carried
 by bubble color alone, exactly like the apps. Do not add identity chrome.
 
+**产品气泡。** 气泡采用渲染器绘制的规范 Muse 主题：Muse（代理）为 `#FFFFFF`、墨色 `#111112` 文字；You（用户）为 `#CBE5FF`、墨色文字；圆角 22（按产品比例），上限为高度的一半（短气泡呈胶囊形）；平面填充、无描边。没有每条消息的胶囊标签（pill）——会话内消息的归属仅靠气泡颜色区分，与应用中的做法完全一致。不要添加额外的身份装饰元素。
+
 **Authorship.** Use bubble color within the thread. The renderer springs the real avatar into the opening, pins its header above the rail, and plays `laughing` on the closing screen, using `milestone_level_up` only when laughing is unavailable. The close lasts through one full reaction and holds its final frame. Inspect the fixed overlay region against the creator's face.
 
+**消息归属。** 在会话内使用气泡颜色区分。渲染器把真实头像弹入开场，把页眉固定在轨道上方，并在结尾画面播放 `laughing`，仅当 `laughing` 不可用时才使用 `milestone_level_up`。结尾持续完整播放一次反应动画并定格在最后一帧。对照创作者面部检查固定叠加区域。
 
 **Stage with safe zones.** Pin the newest surface near 84% frame height.
 Keep text inside the 14% side insets and media inside the wider card lane.
@@ -57,6 +73,8 @@ Earlier content stays on the perspective rail as new beats push it backward
 along the arc. Scale and transparency follow its depth. Inspect the receding
 content against the creator's face.
 Tap enlargements remain inside a fixed bottom stage; inspect face clearance.
+
+**带安全区的舞台。** 把最新的表面固定在约 84% 帧高处。文字保持在 14% 的侧边留白之内，媒体保持在更宽的卡片通道之内。当新节拍把较早内容沿弧线向后推时，较早内容留在透视轨道上。缩放与透明度随其深度变化。对照创作者面部检查后退的内容。点按放大保持在固定的底部舞台之内；检查与面部的间距。
 
 **Pop + directional sounds.** Every bubble pops in WHOLE with the short
 back-eased entry — no text streaming; a message arrives the way a real
@@ -67,11 +85,15 @@ sends, a lower "ding" for Muse messages and cards, a plink for reactions —
 mixed quietly under the VO (peak capped well below speech, never normalized
 up). Never reuse timestamps from another video.
 
+**弹出与方向性音效。** 每个气泡整体（WHOLE）以短促的回弹缓动入场——没有文字流式出现；消息像真实短信那样到达（逐词显现方案已弃用，Lucas 2026-09-02）。音效为 iMessage 式的方向性设计，由 `render_sfx_wav` 根据实际节拍时间生成：用户发送配以上扬的"swip"，Muse 消息和卡片配以较低的"ding"，反应动作用清脆的"plink"——混合音量压低置于旁白（VO）之下（峰值上限远低于语音，绝不做响度归一化提升）。绝不复用其他视频的时间戳。
+
 **Wrapping.** `wrap_text` measures with `getbbox` and breaks long words at the
 character level. The bug it replaces estimated width as `len * 0.6`, which
 produced one word per line.
 
-## Thread-stack physics
+**换行。** `wrap_text` 用 `getbbox` 度量，并在字符层级断开长单词。它所替代的缺陷是把宽度估算为 `len * 0.6`，导致每行只剩一个词。
+
+## Thread-stack physics / 会话堆栈物理
 
 A new block enters over 0.30 seconds and pushes earlier content along the
 curved perspective rail over 0.85 seconds. Earlier content shrinks and becomes
@@ -80,7 +102,9 @@ its authored animation stops. Typing dots stop at `end`, and their slot
 contracts over 0.85 seconds before leaving the layout. The renderer keeps
 its cached layer updating throughout depth movement.
 
-## The browser session
+新区块在 0.30 秒内进入，并在 0.85 秒内把较早内容沿弯曲的透视轨道向后推。较早内容随深度缩小并变得更透明。`end` 之后内容仍留在轨道上；只是其编排的动画停止。输入中圆点在 `end` 时停止，其槽位在 0.85 秒内收缩后离开布局。渲染器在整个深度运动过程中持续更新其缓存图层。
+
+## The browser session / 浏览器会话
 
 A `browser` block is first-class: the renderer owns the shell (mac
 dots + address pill), the page images, the touring cursor, the click
@@ -98,6 +122,12 @@ default and the modal draws live frames at stage resolution. Tapped
 videos do the same: frames extract at tap-stage fit and the thread view
 downscales.
 
-## The avatar
+`browser` 区块是一等公民：渲染器负责外壳（mac 圆点 + 地址胶囊）、页面图像、巡游光标、点击圆环和加载闪烁式的页面切换——在整段节拍（5-20 秒）内统一计时，因此一个浏览器会在舞台上驻留完成整个历程，而不是每页一张卡片。页面是重建（REBUILT）的站点视口：每个 `pages[i]` 的 HTML 以固定的 1240x640 桌面视口渲染（`render_browser_page`），每个非末页的 `click` 选择器都在其各自渲染的页面上测量，使光标落点就在该组件本身（选择器缺失或落点在折叠线以下的居中处会导致渲染失败，并指名该选择器）。渲染后的页面在线程尺寸和点按舞台尺寸下都做了预适配，测量得到的点击点被转换到各尺寸的视口空间（`clicks_t` / `clicks_s`）；该区块默认可点按，模态以舞台分辨率绘制实时帧。点按式视频同理：帧在点按舞台适配尺寸下提取，线程视图再做缩小。
+
+## The avatar / 头像
 
 Use avatar media only as story content when the narration describes that avatar. Do not add avatar thread chrome.
+
+只有当旁白描述那个头像时，才把头像媒体用作故事内容。不要添加头像会话装饰元素。
+
+【评论】文件开篇即声明代码是唯一事实来源、文档与代码不一致时以代码为准，并把字体、字号等视觉常量锁定，以保证渲染结果跨环境可复现。

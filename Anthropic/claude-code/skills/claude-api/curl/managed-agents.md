@@ -1,8 +1,11 @@
-# Managed Agents - cURL / Raw HTTP
+<!-- BILINGUAL-EN-ZH -->
+# Managed Agents - cURL / Raw HTTP / 托管代理 - cURL / 原生 HTTP
 
 Use these examples when the user needs raw HTTP requests or is working without an SDK.
 
-## Setup
+当用户需要原生 HTTP 请求、或在没有 SDK 的环境下工作时，使用这些示例。
+
+## Setup / 准备
 
 ```bash
 export ANTHROPIC_API_KEY="your-api-key"
@@ -18,7 +21,7 @@ HEADERS=(
 
 ---
 
-## Create an Environment
+## Create an Environment / 创建环境
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/environments \
@@ -32,7 +35,7 @@ curl -X POST https://api.anthropic.com/v1/environments \
   }'
 ```
 
-### With restricted networking
+### With restricted networking / 使用受限网络
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/environments \
@@ -53,11 +56,13 @@ curl -X POST https://api.anthropic.com/v1/environments \
 
 ---
 
-## Create an Agent (required first step)
+## Create an Agent (required first step) / 创建代理（必需的第一步）
 
 > Warning: **There is no inline agent config.** Under `managed-agents-2026-04-01`, `model`/`system`/`tools` are top-level fields on `POST /v1/agents`, not on the session. Always create the agent first - the session only takes `"agent": {"type": "agent", "id": "..."}`.
 
-### Minimal
+> 警告：**不存在内联的代理配置。**在 `managed-agents-2026-04-01` 下，`model`/`system`/`tools` 是 `POST /v1/agents` 上的顶层字段，不在会话上。务必先创建代理——会话只接受 `"agent": {"type": "agent", "id": "..."}`。
+
+### Minimal / 最小示例
 
 ```bash
 # 1. Create the agent
@@ -81,7 +86,7 @@ curl -X POST https://api.anthropic.com/v1/sessions \
 # Trace: https://platform.claude.com/workspaces/default/sessions/sesn_abc123  (swap 'default' for your workspace ID if the API key is not in the Default workspace)
 ```
 
-### With system prompt, custom tools, and GitHub repo
+### With system prompt, custom tools, and GitHub repo / 带系统提示词、自定义工具与 GitHub 仓库
 
 ```bash
 # 1. Create the agent
@@ -127,7 +132,7 @@ curl -X POST https://api.anthropic.com/v1/sessions \
   }'
 ```
 
-### With a session budget
+### With a session budget / 带会话预算
 
 ```bash
 # Create a session with a hard $25.00 spend cap (list-priced; USD only; create-only).
@@ -157,9 +162,11 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID \
 
 See `shared/managed-agents-core.md` § Session budgets for list-cost composition, the settle-event allowlist at the cap, and multiagent semantics.
 
+列表成本的构成、到达上限时的结算事件白名单以及多代理语义，参见 `shared/managed-agents-core.md` § Session budgets。
+
 ---
 
-## Send a User Message
+## Send a User Message / 发送用户消息
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
@@ -176,7 +183,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Stream Events (SSE)
+## Stream Events (SSE) / 流式接收事件（SSE）
 
 ```bash
 curl -N https://api.anthropic.com/v1/sessions/$SESSION_ID/events/stream \
@@ -184,6 +191,8 @@ curl -N https://api.anthropic.com/v1/sessions/$SESSION_ID/events/stream \
 ```
 
 Response format:
+
+响应格式：
 
 ```
 event: session.status_running
@@ -198,7 +207,7 @@ data: {"type":"session.status_idle","id":"sevt_...","processed_at":"..."}
 
 ---
 
-## Poll Events
+## Poll Events / 轮询事件
 
 ```bash
 # Get all events
@@ -212,9 +221,11 @@ curl "https://api.anthropic.com/v1/sessions/$SESSION_ID/events?page=page_abc123"
 
 ---
 
-## Provide Custom Tool Result
+## Provide Custom Tool Result / 提交自定义工具结果
 
 When the agent calls a custom tool, send the result back:
+
+当代理调用自定义工具时，把结果回传：
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
@@ -232,7 +243,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Interrupt a Running Session
+## Interrupt a Running Session / 中断正在运行的会话
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
@@ -248,7 +259,7 @@ curl -X POST https://api.anthropic.com/v1/sessions/$SESSION_ID/events \
 
 ---
 
-## Get Session Details
+## Get Session Details / 获取会话详情
 
 ```bash
 curl https://api.anthropic.com/v1/sessions/$SESSION_ID \
@@ -257,7 +268,7 @@ curl https://api.anthropic.com/v1/sessions/$SESSION_ID \
 
 ---
 
-## List Sessions
+## List Sessions / 列出会话
 
 ```bash
 curl https://api.anthropic.com/v1/sessions \
@@ -266,7 +277,7 @@ curl https://api.anthropic.com/v1/sessions \
 
 ---
 
-## Delete a Session
+## Delete a Session / 删除会话
 
 ```bash
 curl -X DELETE https://api.anthropic.com/v1/sessions/$SESSION_ID \
@@ -275,7 +286,7 @@ curl -X DELETE https://api.anthropic.com/v1/sessions/$SESSION_ID \
 
 ---
 
-## Upload a File
+## Upload a File / 上传文件
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/files \
@@ -287,9 +298,11 @@ curl -X POST https://api.anthropic.com/v1/files \
 
 ---
 
-## List and Download Session Files
+## List and Download Session Files / 列出并下载会话文件
 
 List files the agent wrote to `/mnt/session/outputs/` during a session, then download them.
+
+列出代理在会话期间写入 `/mnt/session/outputs/` 的文件，然后下载它们。
 
 ```bash
 # List files associated with a session
@@ -307,7 +320,7 @@ curl "https://api.anthropic.com/v1/files/$FILE_ID/content" \
 
 ---
 
-## List Agents
+## List Agents / 列出代理
 
 ```bash
 curl https://api.anthropic.com/v1/agents \
@@ -316,7 +329,7 @@ curl https://api.anthropic.com/v1/agents \
 
 ---
 
-## MCP Server Integration
+## MCP Server Integration / MCP 服务器集成
 
 ```bash
 # 1. Agent declares MCP server (no auth here - auth goes in a vault)
@@ -346,9 +359,11 @@ curl -X POST https://api.anthropic.com/v1/sessions \
 
 See `shared/managed-agents-tools.md` §Vaults for creating vaults and adding credentials.
 
+创建保管库（vault）与添加凭据参见 `shared/managed-agents-tools.md` §Vaults。
+
 ---
 
-## Tool Configuration
+## Tool Configuration / 工具配置
 
 ```bash
 curl -X POST https://api.anthropic.com/v1/agents \

@@ -1,6 +1,7 @@
-# Streaming - Go
+<!-- BILINGUAL-EN-ZH -->
+# Streaming - Go / 流式传输 - Go
 
-## Streaming
+## Streaming / 流式传输
 
 ```go
 stream := client.Messages.NewStreaming(context.Background(), anthropic.MessageNewParams{
@@ -28,6 +29,8 @@ if err := stream.Err(); err != nil {
 
 **Accumulating the final message** (there is no `GetFinalMessage()` on the stream):
 
+**累积得到最终消息**（流对象上没有 `GetFinalMessage()`）：
+
 ```go
 stream := client.Messages.NewStreaming(ctx, params)
 message := anthropic.Message{}
@@ -37,7 +40,6 @@ for stream.Next() {
 if err := stream.Err(); err != nil { log.Fatal(err) }
 // message.Content now has the complete response
 ```
-
 
 ---
 

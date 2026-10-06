@@ -2,10 +2,11 @@
 name: threejs-lighting
 description: Three.js lighting - light types, shadows, environment lighting. Use when adding lights, configuring shadows, setting up IBL, or optimizing lighting performance.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Lighting
+# Three.js Lighting / Three.js 灯光
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -19,7 +20,7 @@ directionalLight.position.set(5, 5, 5);
 scene.add(directionalLight);
 ```
 
-## Light Types Overview
+## Light Types Overview / 灯光类型概览
 
 | Light            | Description            | Shadow Support | Cost     |
 | ---------------- | ---------------------- | -------------- | -------- |
@@ -30,11 +31,26 @@ scene.add(directionalLight);
 | SpotLight        | Cone-shaped            | Yes            | Medium   |
 | RectAreaLight    | Area light (window)    | No\*           | High     |
 
+| 灯光             | 描述                   | 阴影支持       | 开销     |
+| ---------------- | ---------------------- | -------------- | -------- |
+| AmbientLight（环境光）     | 各处均匀照亮           | 否             | 极低     |
+| HemisphereLight（半球光）  | 天空/地面渐变           | 否             | 极低     |
+| DirectionalLight（平行光） | 平行光线（太阳）         | 是             | 低       |
+| PointLight（点光源）       | 全方向（灯泡）           | 是             | 中       |
+| SpotLight（聚光灯）        | 锥形                    | 是             | 中       |
+| RectAreaLight（矩形面光）  | 面光源（窗户）           | 否\*           | 高       |
+
 \*RectAreaLight shadows require custom solutions
 
-## AmbientLight
+\*RectAreaLight 的阴影需要自行实现定制方案
+
+【评论】shadow bias 类参数用于消除自阴影产生的条纹状伪影（shadow acne），但设置过大又会造成阴影与物体"脱影"，需按场景微调。
+
+## AmbientLight / 环境光
 
 Illuminates all objects equally. No direction, no shadows.
+
+均匀照亮所有对象。无方向性，不产生阴影。
 
 ```javascript
 // AmbientLight(color, intensity)
@@ -46,9 +62,11 @@ ambient.color.set(0xffffcc);
 ambient.intensity = 0.3;
 ```
 
-## HemisphereLight
+## HemisphereLight / 半球光
 
 Gradient from sky to ground color. Good for outdoor scenes.
+
+从天空色到地面色的渐变。适合户外场景。
 
 ```javascript
 // HemisphereLight(skyColor, groundColor, intensity)
@@ -62,9 +80,11 @@ hemi.groundColor; // Ground color
 hemi.intensity;
 ```
 
-## DirectionalLight
+## DirectionalLight / 平行光
 
 Parallel light rays. Simulates distant light source (sun).
+
+平行的光线。模拟远处光源（太阳）。
 
 ```javascript
 // DirectionalLight(color, intensity)
@@ -78,7 +98,7 @@ scene.add(dirLight.target);
 scene.add(dirLight);
 ```
 
-### DirectionalLight Shadows
+### DirectionalLight Shadows / 平行光阴影
 
 ```javascript
 dirLight.castShadow = true;
@@ -107,9 +127,11 @@ const helper = new THREE.CameraHelper(dirLight.shadow.camera);
 scene.add(helper);
 ```
 
-## PointLight
+## PointLight / 点光源
 
 Emits light in all directions from a point. Like a light bulb.
+
+从一个点向所有方向发出光线。如同灯泡。
 
 ```javascript
 // PointLight(color, intensity, distance, decay)
@@ -122,7 +144,7 @@ pointLight.distance; // Maximum range (0 = infinite)
 pointLight.decay; // Light falloff (physically correct = 2)
 ```
 
-### PointLight Shadows
+### PointLight Shadows / 点光源阴影
 
 ```javascript
 pointLight.castShadow = true;
@@ -136,9 +158,11 @@ pointLight.shadow.camera.far = 50;
 pointLight.shadow.bias = -0.005;
 ```
 
-## SpotLight
+## SpotLight / 聚光灯
 
 Cone-shaped light. Like a flashlight or stage light.
+
+锥形光束。如同手电筒或舞台灯。
 
 ```javascript
 // SpotLight(color, intensity, distance, angle, penumbra, decay)
@@ -158,7 +182,7 @@ spotLight.distance; // Range
 spotLight.decay; // Falloff
 ```
 
-### SpotLight Shadows
+### SpotLight Shadows / 聚光灯阴影
 
 ```javascript
 spotLight.castShadow = true;
@@ -176,9 +200,11 @@ spotLight.shadow.bias = -0.0001;
 spotLight.shadow.focus = 1;
 ```
 
-## RectAreaLight
+## RectAreaLight / 矩形面光
 
 Rectangular area light. Great for soft, realistic lighting.
+
+矩形面光源。非常适合柔和、写实的照明。
 
 ```javascript
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
@@ -201,9 +227,9 @@ rectLight.add(helper);
 // Does not cast shadows natively
 ```
 
-## Shadow Setup
+## Shadow Setup / 阴影设置
 
-### Enable Shadows
+### Enable Shadows / 启用阴影
 
 ```javascript
 // 1. Enable on renderer
@@ -228,7 +254,7 @@ floor.receiveShadow = true;
 floor.castShadow = false; // Usually false for floors
 ```
 
-### Optimizing Shadows
+### Optimizing Shadows / 优化阴影
 
 ```javascript
 // Tight shadow camera frustum
@@ -251,7 +277,7 @@ dirLight.shadow.normalBias = 0.02; // Bias along normal
 // 4096 - very high quality (expensive)
 ```
 
-### Contact Shadows (Fake, Fast)
+### Contact Shadows (Fake, Fast) / 接触阴影（假阴影，快速）
 
 ```javascript
 import { ContactShadows } from "three/examples/jsm/objects/ContactShadows.js";
@@ -266,7 +292,7 @@ const contactShadows = new ContactShadows({
 scene.add(contactShadows);
 ```
 
-## Light Helpers
+## Light Helpers / 灯光辅助器
 
 ```javascript
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
@@ -296,9 +322,11 @@ dirHelper.update();
 spotHelper.update();
 ```
 
-## Environment Lighting (IBL)
+## Environment Lighting (IBL) / 环境光照（IBL）
 
 Image-Based Lighting using HDR environment maps.
+
+基于图像的照明（IBL），使用 HDR 环境贴图。
 
 ```javascript
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
@@ -328,7 +356,7 @@ rgbeLoader.load("environment.hdr", (texture) => {
 });
 ```
 
-### Cube Texture Environment
+### Cube Texture Environment / 立方体贴图环境
 
 ```javascript
 const cubeLoader = new THREE.CubeTextureLoader();
@@ -345,9 +373,11 @@ scene.environment = envMap;
 scene.background = envMap;
 ```
 
-## Light Probes (Advanced)
+## Light Probes (Advanced) / 光照探针（进阶）
 
 Capture lighting from a point in space for ambient lighting.
+
+捕获空间中某一点的光照信息，用于环境光照明。
 
 ```javascript
 import { LightProbeGenerator } from "three/examples/jsm/lights/LightProbeGenerator.js";
@@ -370,9 +400,9 @@ lightProbe.copy(
 );
 ```
 
-## Common Lighting Setups
+## Common Lighting Setups / 常见灯光布设
 
-### Three-Point Lighting
+### Three-Point Lighting / 三点布光
 
 ```javascript
 // Key light (main light)
@@ -395,7 +425,7 @@ const ambient = new THREE.AmbientLight(0x404040, 0.3);
 scene.add(ambient);
 ```
 
-### Outdoor Daylight
+### Outdoor Daylight / 户外日光
 
 ```javascript
 // Sun
@@ -409,7 +439,7 @@ const hemi = new THREE.HemisphereLight(0x87ceeb, 0x8b4513, 0.6);
 scene.add(hemi);
 ```
 
-### Indoor Studio
+### Indoor Studio / 室内影棚
 
 ```javascript
 // Multiple area lights
@@ -430,7 +460,7 @@ const ambient = new THREE.AmbientLight(0x404040, 0.2);
 scene.add(ambient);
 ```
 
-## Light Animation
+## Light Animation / 灯光动画
 
 ```javascript
 const clock = new THREE.Clock();
@@ -453,14 +483,20 @@ function animate() {
 }
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Limit light count**: Each light adds shader complexity
+   **限制灯光数量**：每盏灯都会增加着色器复杂度
 2. **Use baked lighting**: For static scenes, bake to textures
+   **使用烘焙光照**：静态场景可烘焙为纹理
 3. **Smaller shadow maps**: 512-1024 often sufficient
+   **更小的阴影贴图**：512-1024 通常已经足够
 4. **Tight shadow frustums**: Only cover needed area
+   **收紧阴影视锥体**：只覆盖需要的区域
 5. **Disable unused shadows**: Not all lights need shadows
+   **关闭用不到的阴影**：并非所有灯光都需要阴影
 6. **Use light layers**: Exclude objects from certain lights
+   **使用灯光图层**：将某些对象从特定灯光中排除
 
 ```javascript
 // Light layers
@@ -474,8 +510,13 @@ mesh.receiveShadow = true;
 decorMesh.castShadow = false; // Small objects often don't need to cast
 ```
 
-## See Also
+【评论】Three.js 默认前向渲染中，每盏灯都会参与所有材质的着色器计算，因此灯光数量对性能的影响是叠加性的，"限制灯光数量"通常是最有效的优化手段。
+
+## See Also / 另请参阅
 
 - `threejs-materials` - Material light response
+  `threejs-materials` - 材质的光照响应
 - `threejs-textures` - Lightmaps and environment maps
+  `threejs-textures` - 光照贴图与环境贴图
 - `threejs-postprocessing` - Bloom and other light effects
+  `threejs-postprocessing` - 泛光及其他光效

@@ -1,8 +1,11 @@
-# ReportFindings tool
+<!-- BILINGUAL-EN-ZH -->
+# ReportFindings tool / ReportFindings 工具
 
 Report code-review findings as a typed list so the host UI can render them. Use this only when the active code-review instructions tell you to report findings with this tool; otherwise follow whatever output format those instructions specify. When reporting a review's results, call it once with the verified findings ranked most-severe first (empty array if nothing survived verification) and do not also print the findings as text. When re-reporting after applying fixes (only if the apply instructions ask for it), set `outcome` on each finding to what actually happened.
 
-## input_schema
+以带类型的列表形式上报代码评审发现，以便宿主 UI 进行渲染。仅当当前生效的代码评审指令要求你用本工具上报发现时才使用它；否则遵循那些指令指定的任何输出格式。上报评审结果时，只调用一次，传入经验证的发现并按严重程度从高到低排序（若没有任何发现通过验证则传空数组），并且不要再把发现以文本形式打印一遍。在应用修复后重新上报时（仅当应用修复的指令要求时），把每个发现的 `outcome` 字段设置为实际发生的结果。
+
+## input_schema / input_schema（输入模式）
 
 ```json
 {

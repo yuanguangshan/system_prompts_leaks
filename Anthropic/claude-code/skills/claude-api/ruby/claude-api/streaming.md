@@ -1,6 +1,7 @@
-# Streaming - Ruby
+<!-- BILINGUAL-EN-ZH -->
+# Streaming - Ruby / 流式传输 - Ruby
 
-## Streaming
+## Streaming / 流式传输
 
 ```ruby
 stream = client.messages.stream(
@@ -13,4 +14,3 @@ stream.text.each { |text| print(text) }
 ```
 
 ---
-

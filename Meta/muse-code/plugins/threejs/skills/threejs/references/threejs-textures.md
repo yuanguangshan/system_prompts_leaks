@@ -2,10 +2,11 @@
 name: threejs-textures
 description: Three.js textures - texture types, UV mapping, environment maps, texture settings. Use when working with images, UV coordinates, cubemaps, HDR environments, or texture optimization.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Textures
+# Three.js Textures / Three.js 纹理
 
-## Quick Start
+## Quick Start / 快速开始
 
 ```javascript
 import * as THREE from "three";
@@ -20,9 +21,9 @@ const material = new THREE.MeshStandardMaterial({
 });
 ```
 
-## Texture Loading
+## Texture Loading / 纹理加载
 
-### Basic Loading
+### Basic Loading / 基础加载
 
 ```javascript
 const loader = new THREE.TextureLoader();
@@ -40,7 +41,7 @@ const texture = loader.load("texture.jpg");
 material.map = texture;
 ```
 
-### Promise Wrapper
+### Promise Wrapper / Promise 封装
 
 ```javascript
 function loadTexture(url) {
@@ -57,11 +58,13 @@ const [colorMap, normalMap, roughnessMap] = await Promise.all([
 ]);
 ```
 
-## Texture Configuration
+## Texture Configuration / 纹理配置
 
-### Color Space
+### Color Space / 色彩空间
 
 Critical for accurate color reproduction.
+
+对准确的颜色再现至关重要。
 
 ```javascript
 // Color/albedo textures - use sRGB
@@ -71,7 +74,7 @@ colorTexture.colorSpace = THREE.SRGBColorSpace;
 // Do NOT set colorSpace for data textures (NoColorSpace is default)
 ```
 
-### Wrapping Modes
+### Wrapping Modes / 环绕模式
 
 ```javascript
 texture.wrapS = THREE.RepeatWrapping; // Horizontal
@@ -83,7 +86,7 @@ texture.wrapT = THREE.RepeatWrapping; // Vertical
 // THREE.MirroredRepeatWrapping - Tiles with mirror flip
 ```
 
-### Repeat, Offset, Rotation
+### Repeat, Offset, Rotation / 重复、偏移、旋转
 
 ```javascript
 // Tile texture 4x4
@@ -99,7 +102,7 @@ texture.rotation = Math.PI / 4;
 texture.center.set(0.5, 0.5); // Rotation pivot
 ```
 
-### Filtering
+### Filtering / 过滤
 
 ```javascript
 // Minification (texture larger than screen pixels)
@@ -115,7 +118,7 @@ texture.magFilter = THREE.NearestFilter; // Pixelated (retro games)
 texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 ```
 
-### Generate Mipmaps
+### Generate Mipmaps / 生成 Mipmap
 
 ```javascript
 // Usually true by default
@@ -126,18 +129,20 @@ texture.generateMipmaps = false;
 texture.minFilter = THREE.LinearFilter;
 ```
 
-## Texture Types
+## Texture Types / 纹理类型
 
-### Regular Texture
+### Regular Texture / 常规纹理
 
 ```javascript
 const texture = new THREE.Texture(image);
 texture.needsUpdate = true;
 ```
 
-### Data Texture
+### Data Texture / 数据纹理
 
 Create texture from raw data.
+
+从原始数据创建纹理。
 
 ```javascript
 // Create gradient texture
@@ -158,7 +163,7 @@ const texture = new THREE.DataTexture(data, size, size);
 texture.needsUpdate = true;
 ```
 
-### Canvas Texture
+### Canvas Texture / Canvas 纹理
 
 ```javascript
 const canvas = document.createElement("canvas");
@@ -179,7 +184,7 @@ const texture = new THREE.CanvasTexture(canvas);
 texture.needsUpdate = true;
 ```
 
-### Video Texture
+### Video Texture / 视频纹理
 
 ```javascript
 const video = document.createElement("video");
@@ -194,7 +199,7 @@ texture.colorSpace = THREE.SRGBColorSpace;
 // No need to set needsUpdate - auto-updates
 ```
 
-### Compressed Textures
+### Compressed Textures / 压缩纹理
 
 ```javascript
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
@@ -208,11 +213,13 @@ ktx2Loader.load("texture.ktx2", (texture) => {
 });
 ```
 
-## Cube Textures
+## Cube Textures / 立方体纹理
 
 For environment maps and skyboxes.
 
-### CubeTextureLoader
+用于环境贴图和天空盒。
+
+### CubeTextureLoader / CubeTextureLoader
 
 ```javascript
 const loader = new THREE.CubeTextureLoader();
@@ -233,7 +240,7 @@ scene.environment = cubeTexture;
 material.envMap = cubeTexture;
 ```
 
-### Equirectangular to Cubemap
+### Equirectangular to Cubemap / 等距柱状投影转立方体贴图
 
 ```javascript
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
@@ -251,9 +258,9 @@ new RGBELoader().load("environment.hdr", (texture) => {
 });
 ```
 
-## HDR Textures
+## HDR Textures / HDR 纹理
 
-### RGBELoader
+### RGBELoader / RGBELoader
 
 ```javascript
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
@@ -266,7 +273,7 @@ loader.load("environment.hdr", (texture) => {
 });
 ```
 
-### EXRLoader
+### EXRLoader / EXRLoader
 
 ```javascript
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader.js";
@@ -278,7 +285,7 @@ loader.load("environment.exr", (texture) => {
 });
 ```
 
-### Background Options
+### Background Options / 背景选项
 
 ```javascript
 scene.background = texture;
@@ -287,9 +294,11 @@ scene.backgroundIntensity = 1.0; // Brightness
 scene.backgroundRotation.y = Math.PI; // Rotate background
 ```
 
-## Render Targets
+## Render Targets / 渲染目标
 
 Render to texture for effects.
+
+渲染到纹理以实现特效。
 
 ```javascript
 // Create render target
@@ -308,7 +317,7 @@ renderer.setRenderTarget(null); // Back to screen
 material.map = renderTarget.texture;
 ```
 
-### Depth Texture
+### Depth Texture / 深度纹理
 
 ```javascript
 const renderTarget = new THREE.WebGLRenderTarget(512, 512);
@@ -322,7 +331,7 @@ renderTarget.depthTexture = new THREE.DepthTexture(
 const depthTexture = renderTarget.depthTexture;
 ```
 
-### Multi-Sample Render Target
+### Multi-Sample Render Target / 多重采样渲染目标
 
 ```javascript
 const renderTarget = new THREE.WebGLRenderTarget(512, 512, {
@@ -330,9 +339,11 @@ const renderTarget = new THREE.WebGLRenderTarget(512, 512, {
 });
 ```
 
-## CubeCamera
+## CubeCamera / CubeCamera
 
 Dynamic environment maps for reflections.
+
+用于反射的动态环境贴图。
 
 ```javascript
 const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
@@ -356,9 +367,9 @@ function animate() {
 }
 ```
 
-## UV Mapping
+## UV Mapping / UV 映射
 
-### Accessing UVs
+### Accessing UVs / 访问 UV
 
 ```javascript
 const uvs = geometry.attributes.uv;
@@ -372,7 +383,7 @@ uvs.setXY(vertexIndex, newU, newV);
 uvs.needsUpdate = true;
 ```
 
-### Second UV Channel (for AO maps)
+### Second UV Channel (for AO maps) / 第二 UV 通道（用于 AO 贴图）
 
 ```javascript
 // Required for aoMap
@@ -384,7 +395,7 @@ const uv2 = new Float32Array(vertexCount * 2);
 geometry.setAttribute("uv2", new THREE.BufferAttribute(uv2, 2));
 ```
 
-### UV Transform in Shader
+### UV Transform in Shader / 着色器中的 UV 变换
 
 ```javascript
 const material = new THREE.ShaderMaterial({
@@ -414,9 +425,11 @@ const material = new THREE.ShaderMaterial({
 });
 ```
 
-## Texture Atlas
+## Texture Atlas / 纹理图集
 
 Multiple images in one texture.
+
+一张纹理中包含多张图像。
 
 ```javascript
 // Atlas with 4 sprites (2x2 grid)
@@ -434,9 +447,9 @@ function selectSprite(row, col, gridSize = 2) {
 selectSprite(0, 0);
 ```
 
-## Material Texture Maps
+## Material Texture Maps / 材质纹理贴图
 
-### PBR Texture Set
+### PBR Texture Set / PBR 纹理集
 
 ```javascript
 const material = new THREE.MeshStandardMaterial({
@@ -478,7 +491,7 @@ const material = new THREE.MeshStandardMaterial({
 geometry.setAttribute("uv2", geometry.attributes.uv);
 ```
 
-### Normal Map Types
+### Normal Map Types / 法线贴图类型
 
 ```javascript
 // OpenGL style normals (default)
@@ -488,9 +501,9 @@ material.normalMapType = THREE.TangentSpaceNormalMap;
 material.normalMapType = THREE.ObjectSpaceNormalMap;
 ```
 
-## Procedural Textures
+## Procedural Textures / 程序化纹理
 
-### Noise Texture
+### Noise Texture / 噪声纹理
 
 ```javascript
 function generateNoiseTexture(size = 256) {
@@ -510,7 +523,7 @@ function generateNoiseTexture(size = 256) {
 }
 ```
 
-### Gradient Texture
+### Gradient Texture / 渐变纹理
 
 ```javascript
 function generateGradientTexture(color1, color2, size = 256) {
@@ -530,9 +543,9 @@ function generateGradientTexture(color1, color2, size = 256) {
 }
 ```
 
-## Texture Memory Management
+## Texture Memory Management / 纹理内存管理
 
-### Dispose Textures
+### Dispose Textures / 释放纹理
 
 ```javascript
 // Single texture
@@ -565,7 +578,7 @@ function disposeMaterial(material) {
 }
 ```
 
-### Texture Pooling
+### Texture Pooling / 纹理池化
 
 ```javascript
 class TexturePool {
@@ -602,14 +615,20 @@ class TexturePool {
 }
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Use power-of-2 dimensions**: 256, 512, 1024, 2048
+   **使用 2 的幂尺寸**：256、512、1024、2048
 2. **Compress textures**: KTX2/Basis for web delivery
+   **压缩纹理**：面向 Web 分发使用 KTX2/Basis
 3. **Use texture atlases**: Reduce texture switches
+   **使用纹理图集**：减少纹理切换
 4. **Enable mipmaps**: For distant objects
+   **启用 mipmap**：针对远处物体
 5. **Limit texture size**: 2048 usually sufficient for web
+   **限制纹理尺寸**：Web 场景 2048 通常足够
 6. **Reuse textures**: Same texture = better batching
+   **复用纹理**：相同纹理 = 更好的合批
 
 ```javascript
 // Check texture memory
@@ -621,8 +640,11 @@ const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
 const textureSize = isMobile ? 1024 : 2048;
 ```
 
-## See Also
+## See Also / 另见
 
 - `threejs-materials` - Applying textures to materials
+  `threejs-materials` - 将纹理应用于材质
 - `threejs-loaders` - Loading texture files
+  `threejs-loaders` - 加载纹理文件
 - `threejs-shaders` - Custom texture sampling
+  `threejs-shaders` - 自定义纹理采样

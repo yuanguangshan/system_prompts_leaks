@@ -2,10 +2,11 @@
 name: threejs-fundamentals
 description: Three.js scene setup, cameras, renderer, Object3D hierarchy, coordinate systems. Use when setting up 3D scenes, creating cameras, configuring renderers, managing object hierarchies, or working with transforms.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Fundamentals
+# Three.js Fundamentals / Three.js 基础
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -55,11 +56,13 @@ window.addEventListener("resize", () => {
 });
 ```
 
-## Core Classes
+## Core Classes / 核心类
 
-### Scene
+### Scene / 场景
 
 Container for all 3D objects, lights, and cameras.
+
+用于容纳所有 3D 对象、灯光和相机的容器。
 
 ```javascript
 const scene = new THREE.Scene();
@@ -71,9 +74,11 @@ scene.fog = new THREE.Fog(0xffffff, 1, 100); // Linear fog
 scene.fog = new THREE.FogExp2(0xffffff, 0.02); // Exponential fog
 ```
 
-### Cameras
+### Cameras / 相机
 
 **PerspectiveCamera** - Most common, simulates human eye.
+
+**PerspectiveCamera** - 最常用，模拟人眼视觉效果。
 
 ```javascript
 // PerspectiveCamera(fov, aspect, near, far)
@@ -91,6 +96,8 @@ camera.updateProjectionMatrix(); // Call after changing fov, aspect, near, far
 
 **OrthographicCamera** - No perspective distortion, good for 2D/isometric.
 
+**OrthographicCamera** - 无透视畸变，适合 2D/等轴测场景。
+
 ```javascript
 // OrthographicCamera(left, right, top, bottom, near, far)
 const aspect = window.innerWidth / window.innerHeight;
@@ -106,6 +113,8 @@ const camera = new THREE.OrthographicCamera(
 ```
 
 **ArrayCamera** - Multiple viewports with sub-cameras.
+
+**ArrayCamera** - 使用多个子相机渲染多个视口。
 
 ```javascript
 const cameras = [];
@@ -124,6 +133,8 @@ const arrayCamera = new THREE.ArrayCamera(cameras);
 
 **CubeCamera** - Renders environment maps for reflections.
 
+**CubeCamera** - 渲染用于反射效果的环境贴图。
+
 ```javascript
 const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
 const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
@@ -137,7 +148,7 @@ cubeCamera.position.copy(reflectiveMesh.position);
 cubeCamera.update(renderer, scene);
 ```
 
-### WebGLRenderer
+### WebGLRenderer / 渲染器
 
 ```javascript
 const renderer = new THREE.WebGLRenderer({
@@ -169,9 +180,11 @@ renderer.setClearColor(0x000000, 1);
 renderer.render(scene, camera);
 ```
 
-### Object3D
+### Object3D / 三维对象
 
 Base class for all 3D objects. Mesh, Group, Light, Camera all extend Object3D.
+
+所有 3D 对象的基类。Mesh、Group、Light、Camera 均继承自 Object3D。
 
 ```javascript
 const obj = new THREE.Object3D();
@@ -212,9 +225,11 @@ obj.updateMatrix(); // Manual matrix update
 obj.updateMatrixWorld(true); // Update world matrix recursively
 ```
 
-### Group
+### Group / 分组
 
 Empty container for organizing objects.
+
+用于组织对象的空容器。
 
 ```javascript
 const group = new THREE.Group();
@@ -227,9 +242,11 @@ group.position.x = 5;
 group.rotation.y = Math.PI / 4;
 ```
 
-### Mesh
+### Mesh / 网格
 
 Combines geometry and material.
+
+将几何体与材质组合在一起。
 
 ```javascript
 const mesh = new THREE.Mesh(geometry, material);
@@ -250,13 +267,18 @@ mesh.frustumCulled = true; // Default: skip if outside camera view
 mesh.renderOrder = 10; // Higher = rendered later
 ```
 
-## Coordinate System
+## Coordinate System / 坐标系
 
 Three.js uses a **right-handed coordinate system**:
 
+Three.js 使用**右手坐标系**：
+
 - **+X** points right
+  **+X** 轴朝右
 - **+Y** points up
+  **+Y** 轴朝上
 - **+Z** points toward viewer (out of screen)
+  **+Z** 轴朝向观察者（指向屏幕外）
 
 ```javascript
 // Axes helper
@@ -264,9 +286,11 @@ const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper); // Red=X, Green=Y, Blue=Z
 ```
 
-## Math Utilities
+【评论】Three.js 采用右手坐标系，与 OpenGL 一致；而 Unity 等引擎使用左手坐标系，跨引擎迁移模型或代码时需注意坐标方向的差异。
 
-### Vector3
+## Math Utilities / 数学工具
+
+### Vector3 / 三维向量
 
 ```javascript
 const v = new THREE.Vector3(x, y, z);
@@ -300,7 +324,7 @@ v.project(camera); // World to NDC
 v.unproject(camera); // NDC to world
 ```
 
-### Matrix4
+### Matrix4 / 四阶矩阵
 
 ```javascript
 const m = new THREE.Matrix4();
@@ -332,7 +356,7 @@ m.makeOrthographic(left, right, top, bottom, near, far);
 m.lookAt(eye, target, up);
 ```
 
-### Quaternion
+### Quaternion / 四元数
 
 ```javascript
 const q = new THREE.Quaternion();
@@ -346,7 +370,7 @@ q.normalize();
 q.invert();
 ```
 
-### Euler
+### Euler / 欧拉角
 
 ```javascript
 const euler = new THREE.Euler(x, y, z, "XYZ"); // Order matters!
@@ -356,7 +380,7 @@ euler.setFromRotationMatrix(m);
 // Rotation orders: 'XYZ', 'YXZ', 'ZXY', 'XZY', 'YZX', 'ZYX'
 ```
 
-### Color
+### Color / 颜色
 
 ```javascript
 const color = new THREE.Color(0xff0000);
@@ -373,7 +397,7 @@ color.multiply(otherColor);
 color.multiplyScalar(2);
 ```
 
-### MathUtils
+### MathUtils / 数学工具函数
 
 ```javascript
 THREE.MathUtils.clamp(value, min, max);
@@ -387,9 +411,9 @@ THREE.MathUtils.smoothstep(x, min, max);
 THREE.MathUtils.smootherstep(x, min, max);
 ```
 
-## Common Patterns
+## Common Patterns / 常见模式
 
-### Proper Cleanup
+### Proper Cleanup / 正确的资源清理
 
 ```javascript
 function dispose() {
@@ -414,7 +438,9 @@ function dispose() {
 }
 ```
 
-### Clock for Animation
+【评论】WebGL 资源由 GPU 侧管理，不调用 dispose() 会造成显存泄漏，这不同于 JavaScript 对象的自动垃圾回收。
+
+### Clock for Animation / 用于动画的时钟
 
 ```javascript
 const clock = new THREE.Clock();
@@ -430,7 +456,7 @@ function animate() {
 }
 ```
 
-### Responsive Canvas
+### Responsive Canvas / 响应式画布
 
 ```javascript
 function onWindowResize() {
@@ -446,7 +472,7 @@ function onWindowResize() {
 window.addEventListener("resize", onWindowResize);
 ```
 
-### Loading Manager
+### Loading Manager / 加载管理器
 
 ```javascript
 const manager = new THREE.LoadingManager();
@@ -460,13 +486,18 @@ const textureLoader = new THREE.TextureLoader(manager);
 const gltfLoader = new GLTFLoader(manager);
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Limit draw calls**: Merge geometries, use instancing, atlas textures
+   **限制绘制调用（draw call）次数**：合并几何体、使用实例化、使用图集纹理
 2. **Frustum culling**: Enabled by default, ensure bounding boxes are correct
+   **视锥剔除**：默认启用，需确保包围盒正确
 3. **LOD (Level of Detail)**: Use `THREE.LOD` for distance-based mesh switching
+   **LOD（细节层次）**：使用 `THREE.LOD` 按距离切换网格模型
 4. **Object pooling**: Reuse objects instead of creating/destroying
+   **对象池**：复用对象，而非反复创建/销毁
 5. **Avoid `getWorldPosition` in loops**: Cache results
+   **避免在循环中调用 `getWorldPosition`**：应缓存计算结果
 
 ```javascript
 // Merge static geometries
@@ -481,8 +512,11 @@ lod.addLevel(lowDetailMesh, 100);
 scene.add(lod);
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-geometry` - Geometry creation and manipulation
+  `threejs-geometry` - 几何体的创建与操作
 - `threejs-materials` - Material types and properties
+  `threejs-materials` - 材质类型与属性
 - `threejs-lighting` - Light types and shadows
+  `threejs-lighting` - 灯光类型与阴影

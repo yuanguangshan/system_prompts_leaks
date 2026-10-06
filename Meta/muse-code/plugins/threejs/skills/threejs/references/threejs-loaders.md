@@ -2,10 +2,11 @@
 name: threejs-loaders
 description: Three.js asset loading - GLTF, textures, images, models, async patterns. Use when loading 3D models, textures, HDR environments, or managing loading progress.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Loaders
+# Three.js Loaders / Three.js 加载器
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -22,9 +23,11 @@ const textureLoader = new THREE.TextureLoader();
 const texture = textureLoader.load("texture.jpg");
 ```
 
-## LoadingManager
+## LoadingManager / LoadingManager
 
 Coordinate multiple loaders and track progress.
+
+协调多个加载器并跟踪进度。
 
 ```javascript
 const manager = new THREE.LoadingManager();
@@ -60,9 +63,9 @@ gltfLoader.load("model.glb");
 // onLoad fires when ALL are complete
 ```
 
-## Texture Loading
+## Texture Loading / 纹理加载
 
-### TextureLoader
+### TextureLoader / TextureLoader
 
 ```javascript
 const loader = new THREE.TextureLoader();
@@ -87,7 +90,7 @@ const texture = loader.load("texture.jpg");
 material.map = texture;
 ```
 
-### Texture Configuration
+### Texture Configuration / 纹理配置
 
 ```javascript
 const texture = loader.load("texture.jpg", (tex) => {
@@ -123,9 +126,11 @@ const texture = loader.load("texture.jpg", (tex) => {
 });
 ```
 
-### CubeTextureLoader
+### CubeTextureLoader / CubeTextureLoader
 
 For environment maps and skyboxes.
+
+用于环境贴图和天空盒。
 
 ```javascript
 const loader = new THREE.CubeTextureLoader();
@@ -148,7 +153,7 @@ scene.environment = cubeTexture;
 material.envMap = cubeTexture;
 ```
 
-### HDR/EXR Loading
+### HDR/EXR Loading / HDR/EXR 加载
 
 ```javascript
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -170,9 +175,11 @@ exrLoader.load("environment.exr", (texture) => {
 });
 ```
 
-### PMREMGenerator
+### PMREMGenerator / PMREMGenerator
 
 Generate prefiltered environment maps for PBR.
+
+为 PBR 生成预过滤的环境贴图。
 
 ```javascript
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -191,9 +198,11 @@ new RGBELoader().load("environment.hdr", (texture) => {
 });
 ```
 
-## GLTF/GLB Loading
+## GLTF/GLB Loading / GLTF/GLB 加载
 
 The most common 3D format for web.
+
+Web 上最常用的 3D 格式。
 
 ```javascript
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -225,7 +234,7 @@ loader.load("model.glb", (gltf) => {
 });
 ```
 
-### GLTF with Draco Compression
+### GLTF with Draco Compression / 使用 Draco 压缩的 GLTF
 
 ```javascript
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -245,7 +254,7 @@ gltfLoader.load("compressed-model.glb", (gltf) => {
 });
 ```
 
-### GLTF with KTX2 Textures
+### GLTF with KTX2 Textures / 使用 KTX2 纹理的 GLTF
 
 ```javascript
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -265,7 +274,7 @@ gltfLoader.load("model-with-ktx2.glb", (gltf) => {
 });
 ```
 
-### Process GLTF Content
+### Process GLTF Content / 处理 GLTF 内容
 
 ```javascript
 loader.load("model.glb", (gltf) => {
@@ -302,9 +311,9 @@ loader.load("model.glb", (gltf) => {
 });
 ```
 
-## Other Model Formats
+## Other Model Formats / 其他模型格式
 
-### OBJ + MTL
+### OBJ + MTL / OBJ + MTL
 
 ```javascript
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
@@ -322,7 +331,7 @@ mtlLoader.load("model.mtl", (materials) => {
 });
 ```
 
-### FBX
+### FBX / FBX
 
 ```javascript
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
@@ -342,7 +351,7 @@ loader.load("model.fbx", (object) => {
 });
 ```
 
-### STL
+### STL / STL
 
 ```javascript
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
@@ -355,7 +364,7 @@ loader.load("model.stl", (geometry) => {
 });
 ```
 
-### PLY
+### PLY / PLY
 
 ```javascript
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
@@ -369,9 +378,9 @@ loader.load("model.ply", (geometry) => {
 });
 ```
 
-## Async/Promise Loading
+## Async/Promise Loading / 异步/Promise 加载
 
-### Promisified Loader
+### Promisified Loader / Promise 化的加载器
 
 ```javascript
 function loadModel(url) {
@@ -391,7 +400,7 @@ async function init() {
 }
 ```
 
-### Load Multiple Assets
+### Load Multiple Assets / 加载多个资源
 
 ```javascript
 async function loadAssets() {
@@ -434,9 +443,9 @@ function loadTexture(url) {
 }
 ```
 
-## Caching
+## Caching / 缓存
 
-### Built-in Cache
+### Built-in Cache / 内置缓存
 
 ```javascript
 // Enable cache
@@ -451,7 +460,7 @@ THREE.Cache.get("key");
 THREE.Cache.remove("key");
 ```
 
-### Custom Asset Manager
+### Custom Asset Manager / 自定义资源管理器
 
 ```javascript
 class AssetManager {
@@ -501,16 +510,16 @@ const texture = await assets.loadTexture("brick", "brick.jpg");
 const model = await assets.loadModel("tree", "tree.glb");
 ```
 
-## Loading from Different Sources
+## Loading from Different Sources / 从不同来源加载
 
-### Data URL / Base64
+### Data URL / Base64 / Data URL / Base64
 
 ```javascript
 const loader = new THREE.TextureLoader();
 const texture = loader.load("data:image/png;base64,iVBORw0KGgo...");
 ```
 
-### Blob URL
+### Blob URL / Blob URL
 
 ```javascript
 async function loadFromBlob(blob) {
@@ -521,7 +530,7 @@ async function loadFromBlob(blob) {
 }
 ```
 
-### ArrayBuffer
+### ArrayBuffer / ArrayBuffer
 
 ```javascript
 // From fetch
@@ -535,7 +544,7 @@ loader.parse(buffer, "", (gltf) => {
 });
 ```
 
-### Custom Path/URL
+### Custom Path/URL / 自定义路径/URL
 
 ```javascript
 // Set base path
@@ -551,7 +560,7 @@ manager.setURLModifier((url) => {
 });
 ```
 
-## Error Handling
+## Error Handling / 错误处理
 
 ```javascript
 // Graceful fallback
@@ -594,13 +603,18 @@ async function loadWithTimeout(url, timeout = 30000) {
 }
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Use compressed formats**: DRACO for geometry, KTX2/Basis for textures
+   **使用压缩格式**：几何体用 DRACO，纹理用 KTX2/Basis
 2. **Load progressively**: Show placeholders while loading
+   **渐进加载**：加载期间显示占位物
 3. **Lazy load**: Only load what's needed
+   **惰性加载**：只加载需要的部分
 4. **Use CDN**: Faster asset delivery
+   **使用 CDN**：更快的资源分发
 5. **Enable cache**: `THREE.Cache.enabled = true`
+   **启用缓存**：`THREE.Cache.enabled = true`
 
 ```javascript
 // Progressive loading with placeholder
@@ -616,8 +630,11 @@ loadModel("model.glb").then((gltf) => {
 });
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-textures` - Texture configuration
+  `threejs-textures` - 纹理配置
 - `threejs-animation` - Playing loaded animations
+  `threejs-animation` - 播放已加载的动画
 - `threejs-materials` - Material from loaded models
+  `threejs-materials` - 来自已加载模型的材质

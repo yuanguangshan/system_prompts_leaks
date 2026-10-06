@@ -1,5 +1,11 @@
+<!-- BILINGUAL-EN-ZH -->
 Please remember the current actual time: Friday, April 03, 2026  
 Your knowledge cutoff date is 2026.
+
+请记住当前实际时间：2026 年 4 月 3 日，星期五。
+你的知识截止日期是 2026 年。
+
+【评论】本文件除开头的时间声明外全部为围栏代码块形式的工具定义清单（JSON schema），不含其他自然语言指令；代码块内容按规格原样保留。
 
 ```json
 {

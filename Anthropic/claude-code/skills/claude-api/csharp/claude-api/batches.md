@@ -1,6 +1,7 @@
-# Message Batches - C#
+<!-- BILINGUAL-EN-ZH -->
+# Message Batches - C# / 消息批处理 - C#
 
-## Message Batches API
+## Message Batches API / 消息批处理 API
 
 ```csharp
 var batch = await client.Messages.Batches.Create(new() {
@@ -11,4 +12,3 @@ var batch = await client.Messages.Batches.Create(new() {
 // Poll client.Messages.Batches.Retrieve(batch.ID) until ProcessingStatus == "ended",
 // then iterate client.Messages.Batches.Results(batch.ID).
 ```
-

@@ -1,18 +1,26 @@
-# Message Batches API - TypeScript
+<!-- BILINGUAL-EN-ZH -->
+# Message Batches API - TypeScript / Message Batches API - TypeScript
 
 The Batches API (`POST /v1/messages/batches`) processes Messages API requests asynchronously at 50% of standard prices.
 
-## Key Facts
+Batches API（`POST /v1/messages/batches`）以标准价格 50% 的成本异步处理 Messages API 请求。
+
+## Key Facts / 关键事实
 
 - Up to 100,000 requests or 256 MB per batch
+  - 每个批次最多 100,000 个请求或 256 MB
 - Most batches complete within 1 hour; maximum 24 hours
+  - 大多数批次在 1 小时内完成；最长 24 小时
 - Results available for 29 days after creation
+  - 结果在创建后 29 天内可获取
 - 50% cost reduction on all token usage
+  - 所有 token 用量成本降低 50%
 - All Messages API features supported (vision, tools, caching, etc.)
+  - 支持 Messages API 的全部功能（视觉、工具、缓存等）
 
 ---
 
-## Create a Batch
+## Create a Batch / 创建批次
 
 ```typescript
 import Anthropic from "@anthropic-ai/sdk";
@@ -50,7 +58,7 @@ console.log(`Status: ${messageBatch.processing_status}`);
 
 ---
 
-## Poll for Completion
+## Poll for Completion / 轮询完成状态
 
 ```typescript
 let batch;
@@ -70,7 +78,7 @@ console.log(`Errored: ${batch.request_counts.errored}`);
 
 ---
 
-## Retrieve Results
+## Retrieve Results / 获取结果
 
 ```typescript
 for await (const result of await client.messages.batches.results(
@@ -98,7 +106,7 @@ for await (const result of await client.messages.batches.results(
 
 ---
 
-## Cancel a Batch
+## Cancel a Batch / 取消批次
 
 ```typescript
 const cancelled = await client.messages.batches.cancel(messageBatch.id);

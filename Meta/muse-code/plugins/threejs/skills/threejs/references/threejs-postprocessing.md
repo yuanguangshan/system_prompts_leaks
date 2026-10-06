@@ -2,10 +2,11 @@
 name: threejs-postprocessing
 description: Three.js post-processing - EffectComposer, bloom, DOF, screen effects. Use when adding visual effects, color grading, blur, glow, or creating custom screen-space shaders.
 ---
+<!-- BILINGUAL-EN-ZH -->
 
-# Three.js Post-Processing
+# Three.js Post-Processing / Three.js 后处理
 
-## Quick Start
+## Quick Start / 快速上手
 
 ```javascript
 import * as THREE from "three";
@@ -36,7 +37,7 @@ function animate() {
 }
 ```
 
-## EffectComposer Setup
+## EffectComposer Setup / EffectComposer 设置
 
 ```javascript
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -67,9 +68,9 @@ function onResize() {
 }
 ```
 
-## Common Effects
+## Common Effects / 常见效果
 
-### Bloom (Glow)
+### Bloom (Glow) / 泛光（辉光）
 
 ```javascript
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -89,9 +90,11 @@ bloomPass.threshold = 0.5;
 bloomPass.radius = 0.8;
 ```
 
-### Selective Bloom
+### Selective Bloom / 选择性泛光
 
 Apply bloom only to specific objects.
+
+只对特定对象应用泛光。
 
 ```javascript
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -135,7 +138,7 @@ function render() {
 }
 ```
 
-### FXAA (Anti-Aliasing)
+### FXAA (Anti-Aliasing) / FXAA（抗锯齿）
 
 ```javascript
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
@@ -158,7 +161,7 @@ function onResize() {
 }
 ```
 
-### SMAA (Better Anti-Aliasing)
+### SMAA (Better Anti-Aliasing) / SMAA（更好的抗锯齿）
 
 ```javascript
 import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
@@ -171,7 +174,7 @@ const smaaPass = new SMAAPass(
 composer.addPass(smaaPass);
 ```
 
-### SSAO (Ambient Occlusion)
+### SSAO (Ambient Occlusion) / SSAO（环境光遮蔽）
 
 ```javascript
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
@@ -197,7 +200,7 @@ ssaoPass.output = SSAOPass.OUTPUT.Default;
 // SSAOPass.OUTPUT.Normal - Normal buffer
 ```
 
-### Depth of Field (DOF)
+### Depth of Field (DOF) / 景深（DOF）
 
 ```javascript
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
@@ -214,7 +217,7 @@ composer.addPass(bokehPass);
 bokehPass.uniforms["focus"].value = distanceToTarget;
 ```
 
-### Film Grain
+### Film Grain / 胶片颗粒
 
 ```javascript
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
@@ -229,7 +232,7 @@ const filmPass = new FilmPass(
 composer.addPass(filmPass);
 ```
 
-### Vignette
+### Vignette / 暗角
 
 ```javascript
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
@@ -242,7 +245,7 @@ vignettePass.uniforms["darkness"].value = 1.0; // Vignette intensity
 composer.addPass(vignettePass);
 ```
 
-### Color Correction
+### Color Correction / 颜色校正
 
 ```javascript
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
@@ -255,7 +258,7 @@ colorPass.uniforms["mulRGB"].value = new THREE.Vector3(1.0, 1.0, 1.0); // Multip
 composer.addPass(colorPass);
 ```
 
-### Gamma Correction
+### Gamma Correction / 伽马校正
 
 ```javascript
 import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
@@ -264,7 +267,7 @@ const gammaPass = new ShaderPass(GammaCorrectionShader);
 composer.addPass(gammaPass);
 ```
 
-### Pixelation
+### Pixelation / 像素化
 
 ```javascript
 import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
@@ -274,7 +277,7 @@ const pixelPass = new RenderPixelatedPass(6, scene, camera); // 6 = pixel size
 composer.addPass(pixelPass);
 ```
 
-### Glitch Effect
+### Glitch Effect / 故障效果
 
 ```javascript
 import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
@@ -285,7 +288,7 @@ glitchPass.goWild = false; // Continuous glitching
 composer.addPass(glitchPass);
 ```
 
-### Halftone
+### Halftone / 半调
 
 ```javascript
 import { HalftonePass } from "three/addons/postprocessing/HalftonePass.js";
@@ -305,7 +308,7 @@ const halftonePass = new HalftonePass(window.innerWidth, window.innerHeight, {
 composer.addPass(halftonePass);
 ```
 
-### Outline
+### Outline / 轮廓
 
 ```javascript
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
@@ -329,9 +332,11 @@ outlinePass.selectedObjects = [mesh1, mesh2];
 composer.addPass(outlinePass);
 ```
 
-## Custom ShaderPass
+## Custom ShaderPass / 自定义 ShaderPass
 
 Create your own post-processing effects.
+
+创建你自己的后处理效果。
 
 ```javascript
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
@@ -375,7 +380,7 @@ composer.addPass(customPass);
 customPass.uniforms.time.value = clock.getElapsedTime();
 ```
 
-### Invert Colors Shader
+### Invert Colors Shader / 颜色反转着色器
 
 ```javascript
 const InvertShader = {
@@ -401,7 +406,7 @@ const InvertShader = {
 };
 ```
 
-### Chromatic Aberration
+### Chromatic Aberration / 色差
 
 ```javascript
 const ChromaticAberrationShader = {
@@ -435,7 +440,7 @@ const ChromaticAberrationShader = {
 };
 ```
 
-## Combining Multiple Effects
+## Combining Multiple Effects / 组合多个效果
 
 ```javascript
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -478,7 +483,7 @@ fxaaPass.uniforms["resolution"].value.set(
 composer.addPass(fxaaPass);
 ```
 
-## Render to Texture
+## Render to Texture / 渲染到纹理
 
 ```javascript
 // Create render target
@@ -494,7 +499,7 @@ const texture = renderTarget.texture;
 otherMaterial.map = texture;
 ```
 
-## Multi-Pass Rendering
+## Multi-Pass Rendering / 多通道渲染
 
 ```javascript
 // Multiple composers for different scenes/layers
@@ -519,7 +524,7 @@ function animate() {
 }
 ```
 
-## WebGPU Post-Processing (Three.js r150+)
+## WebGPU Post-Processing (Three.js r150+) / WebGPU 后处理（Three.js r150+）
 
 ```javascript
 import { postProcessing } from "three/addons/nodes/Nodes.js";
@@ -538,13 +543,18 @@ function animate() {
 }
 ```
 
-## Performance Tips
+## Performance Tips / 性能提示
 
 1. **Limit passes**: Each pass adds a full-screen render
+   **限制通道数量**：每个 pass 都会增加一次全屏渲染
 2. **Lower resolution**: Use smaller render targets for blur passes
+   **降低分辨率**：模糊类 pass 使用更小的渲染目标
 3. **Disable unused effects**: Toggle passes on/off
+   **禁用未使用的效果**：按需开关 pass
 4. **Use FXAA over MSAA**: Less expensive anti-aliasing
+   **用 FXAA 而非 MSAA**：开销更低的抗锯齿
 5. **Profile with DevTools**: Check GPU usage
+   **用 DevTools 做性能分析**：检查 GPU 占用
 
 ```javascript
 // Disable pass
@@ -565,7 +575,7 @@ if (!isMobile) {
 }
 ```
 
-## Handle Resize
+## Handle Resize / 处理窗口尺寸变化
 
 ```javascript
 function onWindowResize() {
@@ -595,8 +605,11 @@ function onWindowResize() {
 window.addEventListener("resize", onWindowResize);
 ```
 
-## See Also
+## See Also / 另请参阅
 
 - `threejs-shaders` - Custom shader development
+  `threejs-shaders` - 自定义着色器开发
 - `threejs-textures` - Render targets
+  `threejs-textures` - 渲染目标
 - `threejs-fundamentals` - Renderer setup
+  `threejs-fundamentals` - 渲染器设置
